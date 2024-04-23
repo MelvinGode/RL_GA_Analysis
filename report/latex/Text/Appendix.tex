@@ -1,0 +1,75 @@
+\appendix
+% Delete the text and write Appendix here (not required, can be omitted):
+% Comment out ' \input{Text/Appendix} ' to remove this section.
+%------------------------------------
+
+
+\section{Additional Information}
+
+You can use the appendix to include information that is relevant, but does not belong in the report. In most cases however, the appendix can be omitted and isn't necessary. \par
+\subsection{Python code}
+If you used python code to process data, you can include the code (or a shorter version of it) in the appendix. Usually, however, it is better to hand in a separate file containing your code together with the report.
+\appendixfootnote{Rule of thumb: short code goes in the appendix, long code goes in a separate file} \par
+
+Below is a simple example of some code used to calculate the values for the circuit in \vref{fig:Circuit} 
+% because I have loaded varioref and cleveref (in that order) varioref has "become clever", and you can
+% use \Vref{} in the start of a sentence.
+\appendixfootnote{exaple usage of the varioref package}
+found in \cref{tab:Circuit_table}:
+
+\begin{listing}[!htb]
+
+\inputminted[%
+firstline=7, 
+lastline=14,
+bgcolor=LightGray,
+breaklines,
+breaksymbolleft={},
+breakindent={15pt}
+]{python}{Code/Python/Circuit_Calculation.py}
+
+\caption{Example from external file}
+\label{listing:1}
+\end{listing}
+
+The code from \cref{listing:1} was displayed using a \verb+.py+ file. Since the lines are not numbered in this code example, you can copy and paste the code from the PDF into python without many issues (does however need to correct indents). \par
+I would advice against using the \verb+lstlisting+ package to display code, as this introduces many unnecessary problems when trying to copy-paste the code.\par
+
+\section{Appendix footnotes}
+This template has a separate roman numeral footnote system for the appendix. You can chose to use this or normal footnotes in the appendix. Use the command \verb+\appendixfootnote{text}+\appendixfootnote{Note that there is \textbf{no} commands: \textbackslash appendixfootnotemark and \textbackslash appendixfootnotetext} to get a (lower case) roman numerical footnote. I added this footnote system because I thought it would be nice to have a separate footnote system for the appendix, since this section is in some ways separate from the rest of the document.
+
+\section{Boxes}
+This template also include two box environments to highlight text. I will showcase these in the two next subsections.
+
+\subsection{Info Box}
+The first environment is named \verb+infobox+ and is numbered, which allows for references to the box. You can also change the title of the box as well as the colours. To change the colour use the command \verb+\SetInfoBoxBgColor{}+ (changes background colour) and \verb#\SetInfoBoxFrameColor{NTNU_blue}# (changes frame colour). The default colours are a light blue background and a darker blue frame. Here is an example:
+
+\begin{infobox}[label=box:info]{Infobox}
+Here is an infobox. You can also write math inside it:
+\begin{align*}
+    3x+5y=6z^2
+\end{align*}
+
+\end{infobox}
+
+Here is a reference to the infobox: \cref{box:info}. Notice that the structure of the infobox numbering is (section number)-(box number). The first infobox in section 2 thus has the reference 2-1.
+
+\subsection{Simple Box}
+The second environment is just a coloured box with no number or title. This can be used just to highlight text. \par
+I also added a theorem environment \verb?Sclaw? that may prove useful. 
+
+\begin{simplebox}
+\begin{Sclaw}[Newton's 2. law]
+\label{law:N2}
+$\vec{F}=\frac{\dd \vec{p}}{\dd t}$
+\end{Sclaw}
+\end{simplebox}
+You can reference the theorem environment: See \cref{law:N2}. I also added a Norwegian version of the environment: \verb+naturlov+.
+Let us change the colour of the next box to blue using \verb?\SetSimpleBoxColor{bg_blue}?.
+
+\SetSimpleBoxColor{bg_blue}
+\begin{simplebox}
+To create your own theorem environment, use the command \verb?\newtheorem{}{}[]?.
+\end{simplebox}
+
+You must use the \verb+newtheorem+ command before \verb?\begin{document}? (the preamble). You can read more about the theorem environment in the \href{https://www.overleaf.com/learn/latex/Theorems_and_proofs}{Overleaf documentation} using this link:\\ \url{https://www.overleaf.com/learn/latex/Theorems_and_proofs}.

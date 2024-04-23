@@ -1,0 +1,27 @@
+\section{Results}
+% Delete the text and write your Results here:
+%------------------------------------
+
+The results section can be combined with the discussion if appropriate. In case of many sub\-/experiments % \-/ fixes the problem that LaTeX won't hyphenate words with dashes in them.
+where the results are vaguely related or unrelated, it would be appropriate to combine the results and discussion. This way you have the information related to each sub-experiment gathered in one place. \par
+Provide uncertainties for the results, but don't discuss it. Do not involve personal opinions, just present the cold hard results in form of numbers, tables, graphs and some sentences. \par
+\Cref{tab:Some-numbers} shows a nice table with comma alignment. \par
+
+\begin{table}[htb]%
+\centering
+\caption{Table with comma alignment.}
+	\label{tab:Some-numbers}
+	\begin{tabular}{SSS} 		% S = special column format from the siunitx package. Aligns commas.
+		\toprule
+		{$m$}  &  {$a$}  & {$F$}  \\
+		{(\si{kg})} &  {(\si{m.s^{-2}})} & {(\si{N})}  \\
+		\midrule
+		1,2 & 10,1 & 12 \\
+		2,44 & 6,92 & 16,88 \\
+		10 & 1,0 & 10 \\
+		8,2 & 1,1 & 9,0 \\
+		100 & 1 & 100 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
