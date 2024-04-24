@@ -1,6 +1,10 @@
 import gymnasium as gym
 import numpy as np
 import matplotlib.pyplot as plt
+import time
+
+
+
 
 env = gym.make('CartPole-v1', render_mode='rgb_array')
 
@@ -25,12 +29,6 @@ TIME_LIMIT = 500
 
 # Create bins and Q table
 def create_bins_and_q_table():
-	# env.observation_space.high
-	# [4.8000002e+00 3.4028235e+38 4.1887903e-01 3.4028235e+38]
-	# env.observation_space.low
-	# [-4.8000002e+00 -3.4028235e+38 -4.1887903e-01 -3.4028235e+38]
-
-	# remove hard coded Values when I know how to
 
 	numBins = 20
 	obsSpaceSize = len(env.observation_space.high)
@@ -59,7 +57,10 @@ def get_discrete_state(state, bins, obsSpaceSize):
 bins, obsSpaceSize, qTable = create_bins_and_q_table()
 
 previousCnt = []  # array of all scores over runs
-metrics = {'ep': [], 'avg': [], 'min': [], 'max': []}  # metrics recorded for graph
+metrics = {'ep': [], 'avg': [], 'min': [], 'max': [], 'time': []}  # metrics recorded for graph
+
+# add timer to measure learning time
+start_time = time.time()
 
 for run in range(RUNS):
 	observation, info = env.reset()
@@ -94,6 +95,10 @@ for run in range(RUNS):
 		qTable[discreteState + (action, )] = newQ  # Update qTable with new Q value
 
 		discreteState = newDiscreteState
+	
+	# Record time metric
+	if run % UPDATE_EVERY == 0:
+		end_time = time.time()
 
 	previousCnt.append(cnt)
 
@@ -109,6 +114,7 @@ for run in range(RUNS):
 		metrics['avg'].append(averageCnt)
 		metrics['min'].append(min(latestRuns))
 		metrics['max'].append(max(latestRuns))
+		metrics['time'].append(end_time - start_time)
 		print("Run:", run, "Average:", averageCnt, "Min:", min(latestRuns), "Max:", max(latestRuns))
 
 
@@ -118,5 +124,13 @@ env.close()
 plt.plot(metrics['ep'], metrics['avg'], label="average rewards")
 plt.plot(metrics['ep'], metrics['min'], label="min rewards")
 plt.plot(metrics['ep'], metrics['max'], label="max rewards")
+plt.legend(loc=4)
+plt.show()
+
+# plot graph: X time, Y average and max reward
+plt.plot(metrics['time'], metrics['avg'], label="average rewards")
+plt.plot(metrics['time'], metrics['min'], label="min rewards")
+plt.plot(metrics['time'], metrics['max'], label="max rewards")
+plt.title("Reward over time")
 plt.legend(loc=4)
 plt.show()
