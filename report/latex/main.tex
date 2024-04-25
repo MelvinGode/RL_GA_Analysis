@@ -1,10 +1,10 @@
 \newlength{\bibsep}
 \documentclass[nonatbib,5p,a4paper]{elsarticle}  % 5p for two columns, 1p for 1 column (this is specific for the elsearticle)
-\usepackage[english,norsk,nynorsk]{babel}        % Language
+\usepackage[english]{babel}        % Language
 \usepackage[DatePublished]{Code/NTNU-lab}        % remove [DatePublished] to remove dates
 \usepackage{csquotes}                            % Must be loaded when babel is loaded to avoid error.
-\input{Code/preamble}                            % Write all preamble code in this file to keep it organised and tidy.
 
+\input{Code/preamble}                            % Write all preamble code in this file to keep it organised and tidy.
 \addbibresource{Bibliography/Sources.bib}        % Selects the Bibliography file.
 
 
@@ -19,7 +19,9 @@
 %\input{Text/0.1-Big_Figures}                    % Change this to another line to move big figures.
 \input{Text/2-Background}
 \input{Text/3-Method}
-\input{Text/4-Results}
+\input{Text/4-Results}\begin{flushright}
+	
+\end{flushright}
 \input{Text/5-RelatedWorks}
 \input{Text/6-Discussion}
 \input{Text/7-Conclusion}
