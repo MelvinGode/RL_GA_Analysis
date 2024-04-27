@@ -2,6 +2,11 @@
 *.code-workspace
 
 
+## DS_Store files
+.DS_Store
+
+
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
