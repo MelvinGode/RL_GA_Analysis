@@ -2,7 +2,7 @@ import gymnasium as gym
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-
+import os
 
 
 
@@ -11,7 +11,8 @@ env = gym.make('CartPole-v1', render_mode='rgb_array')
 # How much new info will override old info. 0 means nothing is learned, 1 means only most recent is considered, old knowledge is discarded
 LEARNING_RATE = 0.1
 # Between 0 and 1, mesue of how much we carre about future reward over immedate reward
-DISCOUNT = 0.95
+# default = 0.95
+DISCOUNT = 1
 RUNS = 10000  # Number of iterations run
 SHOW_EVERY = 2000  # How oftern the current solution is rendered
 UPDATE_EVERY = 100  # How oftern the current progress is recorded
@@ -26,6 +27,10 @@ epsilon_decay_value = epsilon / (END_EPSILON_DECAYING - START_EPSILON_DECAYING)
 PUNISHMENT_FELL_OVER = -375  # Punishment for falling over
 
 TIME_LIMIT = 500
+
+# move working directory to the current file
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 # Create bins and Q table
 def create_bins_and_q_table():
@@ -54,6 +59,41 @@ def get_discrete_state(state, bins, obsSpaceSize):
 	return tuple(stateIndex)
 
 
+# function for saving the final qtabel
+def save_q_table(qTable, ts):
+	np.save(f"data/qTable_{int(ts)}.npy", qTable)
+
+
+# Plot graph
+
+def plot_metrics(metrics, ts):
+	# plot graph: X episodes, Y
+	plt.plot(metrics['ep'], metrics['avg'], label="average rewards")
+	plt.plot(metrics['ep'], metrics['min'], label="min rewards")
+	plt.plot(metrics['ep'], metrics['max'], label="max rewards")
+	plt.legend(loc=4)
+	#plt.show()
+	# save plot
+	plt.savefig(f"plots/metrics_{int(ts)}.png")
+	plt.clf()
+
+
+
+def plot_time_metrics(metrics, ts):
+	# plot graph: X time, Y average and max reward
+	plt.plot(metrics['time'], metrics['avg'], label="average rewards")
+	plt.plot(metrics['time'], metrics['min'], label="min rewards")
+	plt.plot(metrics['time'], metrics['max'], label="max rewards")
+	plt.title("Reward over time")
+	plt.legend(loc=4)
+	plt.savefig(f"plots/time_metrics_{int(ts)}.png")
+	plt.clf()
+
+
+def save_metrics(metrics, ts):
+	np.save(f"data/metrics_{int(ts)}.npy", metrics)
+
+
 bins, obsSpaceSize, qTable = create_bins_and_q_table()
 
 previousCnt = []  # array of all scores over runs
@@ -68,7 +108,7 @@ for run in range(RUNS):
 	done = False  # has the enviroment finished?
 	cnt = 0  # how may movements cart has made
 
-	while not done:
+	while not done and cnt < TIME_LIMIT:
 		if run % SHOW_EVERY == 0:
 			env.render()  # if running RL comment this out
 
@@ -120,17 +160,9 @@ for run in range(RUNS):
 
 env.close()
 
-# Plot graph
-plt.plot(metrics['ep'], metrics['avg'], label="average rewards")
-plt.plot(metrics['ep'], metrics['min'], label="min rewards")
-plt.plot(metrics['ep'], metrics['max'], label="max rewards")
-plt.legend(loc=4)
-plt.show()
-
-# plot graph: X time, Y average and max reward
-plt.plot(metrics['time'], metrics['avg'], label="average rewards")
-plt.plot(metrics['time'], metrics['min'], label="min rewards")
-plt.plot(metrics['time'], metrics['max'], label="max rewards")
-plt.title("Reward over time")
-plt.legend(loc=4)
-plt.show()
+# Save qTable
+save_q_table(qTable, start_time)
+save_metrics(metrics, start_time)
+# Plot metrics
+plot_metrics(metrics, start_time)
+plot_time_metrics(metrics, start_time)
