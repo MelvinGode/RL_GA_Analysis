@@ -1,10 +1,36 @@
-\section{Method and Equipment}
-% Delete the text and write your Method(s) here:
-%------------------------------------
+\section{Method}
+To evaluate the performance of Reinforcement Learning and Genetic Algorithms,
+experiments have been conducted on different environments:
+Cart Pole and \textbf{....}.
 
-An important quality of a scientific report is that it should be possible to redo the experiment based on the
-information found in the report.
-However, this does not mean that you should write every detail. Only include parts necessary to obtain the final result.
-Specific details like serial numbers, manufacturer, etc. goes in your lab journal, an appendix, or can be mentioned briefly if it is relevant to the discussion. Remember that a scientific report should be short. \par
-Remember to use helpful figures and refer to them. In \cref{fig:Countour-plot} you can see examples of vector graphics images. \par
-You can also mention \textit{noteworthy} safety measures you took during the experiment in this section of the report.
+Below, we describe the environments and the implementation used in the experiments.
+\subsection{Cart Pole}
+Cart Pole is a classic control problem in reinforcement learning. 
+The goal is to balance a pole on a cart that can move left or right. 
+
+The state space is four-dimensional, consisting of the cart position, cart velocity, pole angle, and pole angular velocity $[p, v, \alpha, \omega]$. 
+
+The action space is discrete, with two possible actions: move left or move right. 
+
+The reward is 1 for every time step the pole is balanced.
+
+The goal is to balance the pole for as long as possible, with a limit of 500 actions.
+
+The environment, called \textit{CartPole-v1}, is implemented in Python using the Gymnasium library \cite{towers_gymnasium_2023}.
+
+\subsubsection{Reinforcement Learning}
+The reinforcement learning implementation is based on temporal difference learning \cite{sutton1998temporal}, 
+in particular Q-learning.
+The implementation takes inspiration on the work of \textit{JackFurby} \cite{JackFurbyCartPole}.
+
+The \textit{Q-table} is represented by the discretization of the continuous 4-dimensional state vector in 20 even intervals for every dimension of the vector leading to 40 possible pairs of $<state,action>$, considering the two possible actions.
+Once an action is performed, the state selected is the first larger that the observed state.\\
+The parameters used in the experiments are the following:
+\begin{itemize}
+	\item Learning rate $\alpha = 0.1$
+	\item Discount factor $\gamma = 0.95$
+	\item Number of episodes $n_{ep} = 1000$
+	\item Exploration rate $\varepsilon$ starts with $\varepsilon(0)=1$ and decays by $\varepsilon(t) = \varepsilon(t - 1) - \frac{1}{\frac{n_{ep}}{2} - 1}$, every episode, stopping after $\frac{n_{ep}}{2}$ episodes.
+	\item Penalty factor $PF = -375$
+\end{itemize}
+\subsubsection{Genetic Algorithms}
