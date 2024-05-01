@@ -99,11 +99,18 @@ bins, obsSpaceSize, qTable = create_bins_and_q_table()
 previousCnt = []  # array of all scores over runs
 metrics = {'ep': [], 'avg': [], 'min': [], 'max': [], 'time': []}  # metrics recorded for graph
 
+# load random seeds
+if os.path.exists('../data/random_seeds.npy'):
+	seeds = np.load('../data/random_seeds.npy')
+else:
+	seeds = np.random.randint(0, 2**32, RUNS)
+	print("Random seeds generated")
+
 # add timer to measure learning time
 start_time = time.time()
 
 for run in range(RUNS):
-	observation, info = env.reset()
+	observation, info = env.reset(seed=int(seeds[run]))
 	discreteState = get_discrete_state(env.observation_space.high, bins, obsSpaceSize)
 	done = False  # has the enviroment finished?
 	cnt = 0  # how may movements cart has made
