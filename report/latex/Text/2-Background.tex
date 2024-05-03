@@ -4,8 +4,13 @@
 
 \subsection{Reanforcment Learning}
 
-Reinforcment learning is defined as the problem that an agent tries to solve by learning behaviour through trial and error with its enviroment. In other words programming an agent through rewards and punishments rather than how to specificaly solve the task itself\cite{kaelbling1996reinforcement}.
-
+Reinforcment learning is defined as the problem that an agent tries to solve by learning behaviour through trial and error with its enviroment. In other words programming an agent through rewards and punishments rather than how to specificaly solve the task itself\cite{kaelbling1996reinforcement} as depicted in figure \ref{figRL}.
+\begin{figure}[H]
+    \centering
+    \includegraphics [scale = 0.2]{Images/RL_graph.png}
+    \caption{Graph representing reinforcment learning}
+    \label{figRL}
+\end{figure}
 %It can be devided into two strategies for solving said problems. The first strategy involves searching the space or state-action pairs for in order to find which work better in the enviroment. The second technique is estimating the utillity of a particular action. 
 The first concept crucial for reinforcment learning is the \textit{reward function} which is objective feedback from the enviroment. It is usually scalar values that are associate with state action pairs. High rewards are usually associate by state-action pairs which benificial for the agent to be situated in whereas negative rewards would then be disadvantageous states or \textit{hazardous} for the agent to be in. Essentially what is good and bad for the agent in the enviroment. The sole objective of the agent is then to maximize this reward\cite{sutton1999reinforcement}.
 
@@ -22,10 +27,17 @@ Here $Q(s,a)$ is the current state of the agent $r$ is the reward, $\eta$ is the
 
 \subsection{Genetic Algorithms}
 
-Genteic algorithms are computational models of evolution as seen in biology. Similarly to how organisms evolve by natural selection and sexual reproduction, programs can also simulate these processes and behave in a similar fashion to organisms in order to solve a specific problem. In a general sense natural selection is the process which determins which individuals get to survive by some test of fitness. Reproduction is then the method in which the mixing of genes in the remaining population happens and gets passed to the offspring \cite{holland1992genetic}.
+Genteic algorithms are computational models based on the concept of evolution as seen in biology. Similarly to how organisms evolve by natural selection and sexual reproduction, programs can also simulate these processes and behave in a similar fashion to organisms in order to solve a specific problem. In a general sense natural selection is the process which determins which individuals get to survive by some test of fitness. After the best fitted are selelcted the creation or reproduction of the next generation starts. Reproduction is then the method in which the mixing of genes in the remaining population happens and gets passed to the offspring \cite{holland1992genetic}.
+\begin{figure}[H]
+    \centering
+    \includegraphics [scale = 0.08]{Images/GA_graph.png}
+    \caption{visual representation of genetic algorithms}
+    \label{figGA}
+\end{figure}
 
 By starting with a population of individuals wich are creaated randomly we have an initial population with variation amongst the individuals. The DNA wich is essentialy the code of the gene can be represented by a string of bits. These string bits can thought as potential solutions to the problem. Due to the variation in the population some individuals vill be better \textit{fit} which then will be selected to remain. In the final stage the remaiining individuals will mix their bit strings to produce individuals for the next generation. These steps will be continually done fore some number of generations \cite{forrest1996genetic}. 
 
+It is importnad however that we reduce the genetic drift and keep track of hte best solutions that have been produced by the previous generation. To do that we employ a method called Elitism. In ellitism compared with traditional reproductiion the most fitting individual are copied to the next generation without any alteration. In that way the best solution of each generation is alway preserved and adds selective preassure and improve convergence speed \cite{du2018elitism}.
 % If the theory section is short, you may combine it with the introduction or method section. \par
 
 % This section should provide a short overview of the theoretical background for the experiment. Include all equations (but not elementary/ trivial equations that one can assume the reader knows) that are used in the report. Do not reference the experiment in this section. Rather, write more general and use arbitrary variables in equations (not specific variables for the experiment). \par
