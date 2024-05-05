@@ -40,25 +40,31 @@ if len(sys.argv) > 1:
   qTablePath = sys.argv[1]
   qTable, bins, obsSpaceSize  = load_q_table(qTablePath)
 else:
-  qTable, bins, obsSpaceSize  = load_q_table('data/qTable_1714389008.npy')
+  qTable, bins, obsSpaceSize  = load_q_table('data/qTable_1714589135.npy')
 
 
-
+print(qTable.shape)
 # Get the size of each buc
 
-def test_q_table(qTable, env,  numEpisodes=100,  seed = SEED,bins = bins, obsSpaceSize = obsSpaceSize):
+def test_q_table(qTable, env,  numEpisodes=1,  seed = SEED,bins = bins, obsSpaceSize = obsSpaceSize):
     # Test the trained q-table with the environment
     for episode in range(numEpisodes):
         state = env.reset(seed=seed)
         done = False
         steps = 0
         discrete_state = get_discrete_state(env.observation_space.high, bins, obsSpaceSize)
+        frames = []
         while not done and steps < 500:
+            frames.append(env.render())
             action = np.argmax(qTable[discrete_state])
             state, reward, done, _, info = env.step(action)
             discrete_state = get_discrete_state(state, bins, obsSpaceSize)
             steps += reward
 
+        # save the frames in frames folder
+        for i, frame in enumerate(frames):
+            plt.imsave(f'frames/RL_{episode}_{i}.png', frame)
+        
         print(f'Episode {episode} reward: {steps}')
 
 #def test_GA()
