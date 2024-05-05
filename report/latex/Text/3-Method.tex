@@ -43,6 +43,8 @@ The first method we used is a very naive implementation that can be applied to a
 Thus, genotype[i] corresponds to move number i performed by the corresponding individual.
 In this apporach, mutation is performed by changing an action in the genotype from left to right or from right to left.
 \\
+Since this particular genotype doesn't generalize well to the random initialization of the position of the pole, we have also tried this in fixed conditions, by seeding the environment to always start in the same place.
+\\
 Second, we tried another GA implementation, relying on what we already were using in our Reinforcement Learning part, that is the \textit{Q-table}.
 In this approach, we don't try to predict every action one by one as we did previously but instead use GA to assign values to state-actions pairs in our \textit{Q-table} and then act greedily by selecting the best action for every state we encounter.
 Here, mutation is performed by adding some random noise to the \textit{Q-table} values.
