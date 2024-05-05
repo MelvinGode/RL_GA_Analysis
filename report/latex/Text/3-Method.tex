@@ -33,4 +33,24 @@ The parameters used in the experiments are the following:
 	\item Exploration rate $\varepsilon$ starts with $\varepsilon(0)=1$ and decays by $\varepsilon(t) = \varepsilon(t - 1) - \frac{1}{\frac{n_{ep}}{2} - 1}$, every episode, stopping after $\frac{n_{ep}}{2}$ episodes.
 	\item Penalty factor $PF = -375$
 \end{itemize}
+
 \subsubsection{Genetic Algorithms}
+
+\textbf{Genotype}\\
+Since Genetic Algorithms can be very different depending on the genotype chosen to represent individuals, we have tried several different implementation of GA, varying the used genotype.
+\\
+The first method we used is a very naive implementation that can be applied to a very large variety of problems with GA : reprensenting individuals with the vector of all actions they will perform in order.
+Thus, genotype[i] corresponds to move number i performed by the corresponding individual.
+In this apporach, mutation is performed by changing an action in the genotype from left to right or from right to left.
+\\
+Second, we tried another GA implementation, relying on what we already were using in our Reinforcement Learning part, that is the \textit{Q-table}.
+In this approach, we don't try to predict every action one by one as we did previously but instead use GA to assign values to state-actions pairs in our \textit{Q-table} and then act greedily by selecting the best action for every state we encounter.
+Here, mutation is performed by adding some random noise to the \textit{Q-table} values.
+\\
+
+\textbf{Parameters}\\
+The GA parameters can be found in the following table :
+\begin{tabular}
+	Genotype & Population Size & Generations & Selection & Mutation Rate & Crossover \\
+	\textit{Q-table} & 50 & 200 & Rank & 0.05 & One-point \\
+  \end{tabular}
