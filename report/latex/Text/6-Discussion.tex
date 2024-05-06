@@ -1,9 +1,8 @@
 \section{Discussion}
 % Delete the text and write your Discussion here:
 %------------------------------------
+Originally, when only trying the action by action approach in GA, we were scared that our results might be very one sided, with very poor performances for GA and no real generalization capacities.
+However, it was very interesting to see that Genetic Algorithm performed much better when combining it with features from Reinforcement Learing -namely the \textit{Q-table}.
 
-You should try to show insight into what happened and why, and how things could have
-gone differently. If you have presented any background theory, try to tie it together with
-your results. How do they relate? If they differ, try to explain why. Even if things didn’t
-work out as intended, a good discussion shows that you’ve understood what went wrong
-and how you could potentially overcome these obstacles. 
+It is still important to keep in mind that a specific thing we used in this project was the \textit{state discretization}, which allowed us to use the afformentioned tabular approach.
+Without this, we would have had to take a different and more elaborate direction. In particular, we thought of exploring the path of function approximation which is a very common approach in continuous state problems in RL, but we could not see simple adaptations to bring it to GA.
