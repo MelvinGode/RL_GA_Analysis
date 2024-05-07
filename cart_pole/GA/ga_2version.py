@@ -4,7 +4,7 @@ import gymnasium as gym
 import matplotlib.pyplot as plt
 import time
 import os
-import ga_functions as ga
+
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -15,8 +15,12 @@ MAX_MOVES = 500
 OBS_SPACE_SIZE = 4
 NB_GEN = 200
 POP_SIZE = 50
-MUTATION_RATE = 0.01
+MUTATION_RATE = 0.005 # 0.005
+NP_SEED = 10 
+SELECTION = "fitness" # fitness
+np.random.seed(NP_SEED)
 
+import ga_functions as ga
 """Initial population creation"""
 
 def create_bins(numBins=20):
@@ -53,14 +57,16 @@ def play_gen(population, env, random_seed_array, bins, obsSpaceSize=OBS_SPACE_SI
   for i in range(pop_size):
     env.reset(seed=int(random_seed_array[i]))
     discreteState = get_discrete_state(env.observation_space.high, bins, obsSpaceSize)
-
+    #print(f'Individual {i}, play gen...')
     for t in range(max_moves):
+      
       action = population[i][discreteState]
       observation, reward, done, info, blc = env.step(action)
       discreteState = get_discrete_state(observation, bins, obsSpaceSize)
       if done : break
 
     fitnesses[i]=t
+    #print(f'Individual {i}, Fitness: {fitnesses[i]}')
 
   return fitnesses
 
@@ -109,7 +115,7 @@ class GA_agent():
             self.population = self.population.astype(int)
 
             self.diversity[i] = ga.pop_diversity(self.population)
-
+            print(f'### Generation {i}: starting playing... ###')
             fit = play_gen(self.population, env, self.random_seed_array[self.current_random_seed: self.current_random_seed + self.pop_size],  bins = self.bins)
             self.current_random_seed += self.pop_size
 
@@ -141,7 +147,7 @@ class GA_agent():
         plt.xlabel("Generation")
         plt.ylabel("Fitness")
         plt.title("Fitness over time")
-        plt.savefig(f'plots/GA_v2_evolution_{self.start_time}.png')
+        plt.savefig(f'plots/GA_v2_evolution_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
         plt.show()
 
     def plot_evolution_per_second(self):
@@ -151,7 +157,7 @@ class GA_agent():
         plt.xlabel("Seconds of training")
         plt.ylabel("Fitness")
         plt.title("Fitness over training time")
-        plt.savefig(f'plots/GA_v2_evoluiton_per_second_{self.start_time}.png')
+        plt.savefig(f'plots/GA_v2_evoluiton_per_second_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
         plt.show()
 
     def plot_diversity(self):
@@ -159,28 +165,29 @@ class GA_agent():
         plt.xlabel("Generation")
         plt.ylabel("Average gene STD")
         plt.title("Population diversity over time")
-        plt.savefig(f'plots/GA_v2_pop_diversity_{self.start_time}.png')
+        plt.savefig(f'plots/GA_v2_pop_diversity_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
         plt.show()
 
     def save_metrics(self):
-        name = f'data/GA_v2_metrics_{self.start_time}.npy'
+        name = f'data/GA_v2_metrics_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
         metrics = np.array({
             "max" : self.best_scores,
             "avg" : self.avg_scores,
             "diversity" : self.diversity,
             "time": self.time_samples})
         np.save(name, metrics)
-    def saveLastPopulation(self):
-        name = f'data/GA_v2_population_{self.start_time}.npy'
+
+    def savePopulation(self):
+        name = f'../data/GA_v2_population_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
         np.save(name, self.population)
 
 
-agent = GA_agent("fitness", NB_GEN, POP_SIZE, MUTATION_RATE)
+agent = GA_agent(SELECTION, NB_GEN, POP_SIZE, MUTATION_RATE)
 
 agent.evolve()
 
 agent.plot_evolution_per_second()
 agent.plot_evolution()
 agent.plot_diversity()
-
+agent.savePopulation()
 agent.save_metrics()

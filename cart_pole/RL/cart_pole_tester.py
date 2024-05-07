@@ -6,13 +6,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-SEED = 1714389008
-
+SEED = 124
+NUM_BINS = 20
 def get_discrete_state(state, bins, obsSpaceSize):
 	stateIndex = []
 	for i in range(obsSpaceSize):
 		stateIndex.append(np.digitize(state[i], bins[i]) - 1) # -1 will turn bin into index
 	return tuple(stateIndex)
+
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -22,9 +23,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 env = gym.make('CartPole-v1', render_mode='rgb_array')
 np.random.seed(SEED)
 # Load the q-table
-def load_q_table(qTablePath):
+def load_q_table(qTablePath, numBins=NUM_BINS):
     qTable = np.load(qTablePath, allow_pickle=True)
-    numBins = 20
+    
     obsSpaceSize = len(env.observation_space.high)
 
     bins = [
@@ -36,18 +37,18 @@ def load_q_table(qTablePath):
 
     return qTable, bins, obsSpaceSize
 
-if len(sys.argv) > 1:
+if len(sys.argv) > 2:
   qTablePath = sys.argv[1]
+  GAPath = sys.argv[2]
   qTable, bins, obsSpaceSize  = load_q_table(qTablePath)
 else:
   qTable, bins, obsSpaceSize  = load_q_table('data/qTable_1714589135.npy')
+  population = np.load('../data/GA_v2_population_fitness_0.005_10.npy',allow_pickle=True)
 
 
-print(qTable.shape)
-# Get the size of each buc
-
-def test_q_table(qTable, env,  numEpisodes=1,  seed = SEED,bins = bins, obsSpaceSize = obsSpaceSize):
+def test(qTable, env,  numEpisodes=1,  seed = SEED, GA = False, bins = bins, obsSpaceSize = obsSpaceSize):
     # Test the trained q-table with the environment
+    best_reward = 0
     for episode in range(numEpisodes):
         state = env.reset(seed=seed)
         done = False
@@ -56,17 +57,45 @@ def test_q_table(qTable, env,  numEpisodes=1,  seed = SEED,bins = bins, obsSpace
         frames = []
         while not done and steps < 500:
             frames.append(env.render())
-            action = np.argmax(qTable[discrete_state])
+            if GA:
+                action = int(qTable[discrete_state])
+            else:
+                action = np.argmax(qTable[discrete_state])
             state, reward, done, _, info = env.step(action)
             discrete_state = get_discrete_state(state, bins, obsSpaceSize)
             steps += reward
 
         # save the frames in frames folder
-        for i, frame in enumerate(frames):
-            plt.imsave(f'frames/RL_{episode}_{i}.png', frame)
+        #for i, frame in enumerate(frames):
+        #    plt.imsave(f'frames/RL_{episode}_{i}.png', frame)
         
         print(f'Episode {episode} reward: {steps}')
+        if steps > best_reward:
+             best_reward = steps
 
-#def test_GA()
+    return best_reward
 
-test_q_table(qTable, env)
+def plot_results(qTable, best_ind):
+    qTable = np.argmax(qTable, axis=4)
+    diff = np.reshape(np.abs(qTable - best_ind),(NUM_BINS*NUM_BINS, NUM_BINS*NUM_BINS))
+    # plot diff between the best individual and the qTable x: state, y: action
+    plt.imshow(diff, cmap='hot', interpolation='nearest')
+    plt.show()
+
+
+# RL test
+test(qTable, env)
+
+# GA test
+best_ind = population[0]
+best_reward = 0
+for i in range(len(population)):
+    reward = test(population[i],env, GA = True) 
+    if reward > best_reward:
+        best_reward = reward
+        best_ind = i
+
+print(f'Best individual {i}: {best_reward}')
+
+plot_results(qTable, best_ind)
+
