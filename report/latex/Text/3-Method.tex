@@ -19,20 +19,39 @@ The goal is to balance the pole for as long as possible, with a limit of 500 act
 The environment, called \textit{CartPole-v1}, is implemented in Python using the Gymnasium library \cite{towers_gymnasium_2023}.
 
 \subsubsection{Reinforcement Learning}
-The reinforcement learning implementation is based on temporal difference learning \cite{sutton1998temporal}, 
+The reinforcement learning implementation is based on temporal differenc learning \cite{sutton1998temporal}, 
 in particular Q-learning.
 The implementation takes inspiration on the work of \textit{JackFurby} \cite{JackFurbyCartPole}.
 
 The \textit{Q-table} is represented by the discretization of the continuous 4-dimensional state vector in 20 even intervals for every dimension of the vector leading to 40 possible pairs of $<state,action>$, considering the two possible actions.
 Once an action is performed, the state selected is the first larger that the observed state.\\
 The parameters used in the experiments are the following:
-\begin{itemize}
-	\item Learning rate $\alpha = 0.1$
-	\item Discount factor $\gamma = 0.95$
-	\item Number of episodes $n_{ep} = 1000$
-	\item Exploration rate $\varepsilon$ starts with $\varepsilon(0)=1$ and decays by $\varepsilon(t) = \varepsilon(t - 1) - \frac{1}{\frac{n_{ep}}{2} - 1}$, every episode, stopping after $\frac{n_{ep}}{2}$ episodes.
-	\item Penalty factor $PF = -375$
-\end{itemize}
+
+
+\begin{table}[htb]%
+	\centering
+	\caption{Parameters used in the RL implementation}
+	\label{tab:RL_parameters}
+	\begin{tabular}{|S|S|} 		% S = special column format from the siunitx package. Aligns commas.
+		
+		\hline
+		{\textbf{Learning rate $\alpha$}} &  {0.1} \\
+		\hline
+		{\textbf{Discount factor $\gamma$}} & {1} \\
+		\hline
+		{\textbf{Number of episodes $n_{ep}$}} & {100} \\
+		\hline
+		{\textbf{Exploration rate $\varepsilon$}}  & {variable} \\
+		\hline
+		{\textbf{Mutation Rate}} & {0.05} \\
+		\hline
+		{\textbf{Penalty factor $PF$}}& {-375} \\
+		\hline
+		
+	\end{tabular}
+\end{table}
+The exploration rate $\varepsilon$ starts with $\varepsilon(0)=1$ and decays by $\varepsilon(t) = \varepsilon(t - 1) - \frac{1}{\frac{n_{ep}}{2} - 1}$, every episode, stopping after $\frac{n_{ep}}{2}$ episodes.
+
 
 \subsubsection{Genetic Algorithms}
 
@@ -52,7 +71,27 @@ Here, mutation is performed by adding some random noise to the \textit{Q-table} 
 
 \textbf{Parameters}\\
 The GA parameters can be found in the following table :
-\begin{tabular}
-	Genotype & Population Size & Generations & Selection & Mutation Rate & Crossover \\
-	\textit{Q-table} & 50 & 200 & Rank & 0.05 & One-point \\
-  \end{tabular}
+\begin{table}[htb]%
+	\centering
+	\caption{Parameters used in the GA implementation}
+	\label{tab:GA_parameters}
+	\begin{tabular}{|S|S|} 		% S = special column format from the siunitx package. Aligns commas.
+		
+		\hline
+		{\textbf{Genotype}} &  {Q-table} \\
+		\hline
+		{\textbf{Population Size}} & {50} \\
+		\hline
+		{\textbf{Generations}} & {200} \\
+		\hline
+		{\textbf{Selection}}  & {Rank} \\
+		\hline
+		{\textbf{Mutation Rate}} & {0.05} \\
+		\hline
+		{\textbf{Crossover}}& {Uniform} \\
+		\hline
+
+	\end{tabular}
+\end{table}
+
+
