@@ -17,7 +17,7 @@ NB_GEN = 200
 POP_SIZE = 50
 MUTATION_RATE = 0.005 # 0.005
 NP_SEED = 10 
-SELECTION = "fitness" # fitness
+SELECTION = "rank" # fitness
 np.random.seed(NP_SEED)
 
 import ga_functions as ga
