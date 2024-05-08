@@ -96,12 +96,13 @@ class GA_agent():
         self.avg_scores = np.empty(nb_gen)
         self.diversity = np.empty(nb_gen)
         self.time_samples = np.empty(nb_gen)
+        self.fitness_variance = np.empty(nb_gen)
 
         # if exists the file data/random_seed.npy, load it
         if os.path.exists('../data/random_seed.npy'):
             self.random_seed_array = np.load('../data/random_seed.npy')
         else:
-            self.random_seed_array = np.random.randint(0, 2**32, 10000)
+            self.random_seed_array = np.random.randint(0, 2**16, 10000)
         self.current_random_seed = 0
 
     def evolve(self, env = gym.make("CartPole-v1")):
@@ -120,6 +121,7 @@ class GA_agent():
             self.current_random_seed += self.pop_size
 
             if max(fit) > self.best_score: self.best_score = max(fit)
+            self.fitness_variance[i] = np.var(fit)
 
             now = time.time()
             self.time_samples[i] = now - start_time
@@ -168,13 +170,23 @@ class GA_agent():
         plt.savefig(f'plots/GA_v2_pop_diversity_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
         plt.show()
 
+    def plot_fitness_variance(self):
+        plt.plot(self.fitness_variance, color="crimson")
+        plt.legend()
+        plt.xlabel("Generation")
+        plt.ylabel("Fitness variance")
+        plt.title("Fitness variance over time")
+        plt.savefig(f'plots/GA_v2_fitnessvar_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        plt.show()
+
     def save_metrics(self):
         name = f'data/GA_v2_metrics_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
         metrics = np.array({
             "max" : self.best_scores,
             "avg" : self.avg_scores,
             "diversity" : self.diversity,
-            "time": self.time_samples})
+            "time": self.time_samples,
+            "fitness_var" : self.fitness_variance})
         np.save(name, metrics)
 
     def savePopulation(self):
@@ -189,5 +201,7 @@ agent.evolve()
 agent.plot_evolution_per_second()
 agent.plot_evolution()
 agent.plot_diversity()
+agent.plot_fitness_variance()
+
 agent.savePopulation()
 agent.save_metrics()
