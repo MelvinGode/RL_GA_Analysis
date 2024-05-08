@@ -16,13 +16,15 @@ The first concept crucial for reinforcment learning is the \textit{reward functi
 
 Naturally we have to define \textit{state} and \textit{action}, which compared to the rest of the concepts have a very general definition. That being the latter is a descision of some sort and the former a factor that has to be taken into considaration when taking an action. 
 
-Equally importand is the \textit{value} or \textit{update} equation which is responsible for mapping the different states bassed on their estimated long term reward. There can be several algorithms for how to update the values but we use Q learning in this report. Q learning is an algorithm where the enviroment can be constituted by a controlled Markov process where the agent is controlling it \cite{watkins1992q}. The agent chooses an action and accordingly gets rewarded for it. Q-learning uses the Markov chains to calculate the max reward that can be accumilated by the next state action and updates towards that as shown in the equation below.
+A central class of methods reinforcment learnign is temporal difference learning. It refers to a class of methods which the learning is based on the difference between temporally successive predictions. It aims to adjust the learner's current expectation for the present input pattern so that it more accurately aligns with the subsequent prediction at the following time step. Unlike Monte carlo methods and other methods in temporal learning updates its estimated value function at every step. \cite{tesauro1995temporal}. 
 
-\begin{equation}
+In temporal learning there are several subcmethods or rather algorithms such as SARSA ,Q learning, TD-Lambda and more. Q learning is an algorithm where the enviroment can be constituted by a controlled Markov process where the agent is controlling it \cite{watkins1992q}. The agent chooses an action and accordingly gets rewarded for it. Q-learning uses the Markov chains to calculate the max reward that can be accumilated by the next state action and updates towards that as shown in the equation below.
+
+\begin{equation} \label{eqQ}
     { Q(s,a) := Q(s,a) + \eta [r + \gamma \max Q(s',a') - Q(s,a)]}
 \end{equation}
 
-Here $Q(s,a)$ is the current state of the agent $r$ is the reward, $\eta$ is the learning rate and $Q(s',a')$ is the next state. An importnad variable here is $\gamma$ which represent the discount factor. This is used to limit the Markov chain to a limited finite number so they don't end up infinite. This controlls how many steps into the future the agent will try ot estimate. 
+Equation \ref{eqQ} is the \textit{value} or \textit{update} equation which is responsible for mapping the different states bassed on their estimated long term reward in Q learning. Here $Q(s,a)$ is the current state of the agent $r$ is the reward, $\eta$ is the learning rate and $Q(s',a')$ is the next state. An importnad variable here is $\gamma$ which represent the discount factor. This is used to limit the Markov chain to a limited finite number so they don't end up infinite. This controlls how many steps into the future the agent will try ot estimate. 
 
 
 \subsection{Genetic Algorithms}
