@@ -2,13 +2,23 @@ import numpy as np
 
 def fitness_selection(fitnesses):
   half_pop_size = int(len(fitnesses)/2)
-  pairs = np.random.choice(range(len(fitnesses)), size=(half_pop_size, 2), p=fitnesses/sum(fitnesses))
+  pairs = np.empty((half_pop_size,2))
+
+  selection_probabilities = fitnesses/sum(fitnesses)
+
+  for i in range(half_pop_size):
+    pairs[i] = np.random.choice(range(len(fitnesses)), size=2, p=selection_probabilities, replace=False)
   return pairs
 
 def rank_selection(fitnesses):
-  half_pop_size = int(len(fitnesses)/2)
-  pairs = np.random.choice(range(len(fitnesses)), size=(half_pop_size, 2), p=np.argsort(fitnesses)/sum(range(len(fitnesses))))
-  return pairs
+    half_pop_size = int(len(fitnesses)/2)
+    pairs = np.empty((half_pop_size,2))
+
+    selection_probabilities = np.argsort(fitnesses)/sum(range(len(fitnesses)))
+
+    for i in range(half_pop_size):
+      pairs[i] = np.random.choice(range(len(fitnesses)), size=2, p=selection_probabilities, replace=False)
+    return pairs
 
 def crossover(pairs, population, numBins=20, obsSpaceSize=4):
   pop_size = population.shape[0]
