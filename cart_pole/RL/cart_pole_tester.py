@@ -81,6 +81,11 @@ def plot_results(qTable, best_ind):
     # plot diff between the best individual and the qTable x: state, y: action
     plt.imshow(diff, cmap='hot', interpolation='nearest')
     plt.show()
+    # save the plot
+    plt.imsave('plots/diff.png',diff, cmap='hot')
+    # include axis in the saved plot
+    
+
 
 
 # RL test
