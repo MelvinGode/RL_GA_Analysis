@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1ecPu22w7rLTFJA96YkPQ1B5nKHreZtZW
 """
 
-pip install gymnasium
+#pip install gymnasium
 
 import numpy as np
 import gymnasium as gym

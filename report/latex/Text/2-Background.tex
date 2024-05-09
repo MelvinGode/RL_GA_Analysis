@@ -18,7 +18,7 @@ Naturally we have to define \textit{state} and \textit{action}, which compared t
 
 A central class of methods reinforcment learnign is temporal difference learning. It refers to a class of methods which the learning is based on the difference between temporally successive predictions. It aims to adjust the learner's current expectation for the present input pattern so that it more accurately aligns with the subsequent prediction at the following time step. Unlike Monte carlo methods and other methods in temporal learning updates its estimated value function at every step. \cite{tesauro1995temporal}. 
 
-In temporal learning there are several subcmethods or rather algorithms such as SARSA ,Q learning, TD-Lambda and more. Q learning is an algorithm where the enviroment can be constituted by a controlled Markov process where the agent is controlling it \cite{watkins1992q}. The agent chooses an action and accordingly gets rewarded for it. Q-learning uses the Markov chains to calculate the max reward that can be accumilated by the next state action and updates towards that as shown in the equation below.
+In temporal learning there are several subcmethods or rather algorithms such as SARSA ,Q learning, TD-Lambda and more \cite{eiben2007reinforcement}. Q learning is an algorithm where the enviroment can be constituted by a controlled Markov process where the agent is controlling it \cite{watkins1992q}. The agent chooses an action and accordingly gets rewarded for it. Q-learning uses the Markov chains to calculate the max reward that can be accumilated by the next state action and updates towards that as shown in the equation below.
 
 \begin{equation} \label{eqQ}
     { Q(s,a) := Q(s,a) + \eta [r + \gamma \max Q(s',a') - Q(s,a)]}

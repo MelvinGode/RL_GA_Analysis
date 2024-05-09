@@ -9,8 +9,13 @@ In the feild of Machine learning there are several methods which can be used to 
 More specificaly intresssting is the comparison of the performance of Genetic Algorithms (GA) and Reinforcement Learning (RL) techniques in the context of a game environment. On one hand reinforcment learning the agent engages dynamic and evolving enviroment by taking actions that affect it in order to acomplish a specific job. On the other hand we have evolutionary algorithms which employ evolutionary princibles for automated and concurrent problem-solving by drawing inspiration from populations of interacting organisms. Despite their apparent dissimilarities, RL and GA both tackle the same fundamental issue: optimizing a function. This entails maximizing an agent's reward in RL and the fitness function in evolutionary algorithms, respectively, particularly in environments where the parameters may be unknown \cite{drugan2019reinforcement}. 
 
 In this paper we will compare Reinforcement learning and Genetic Algorthms by having them both balance a cartpole in 500 moves. More specificaly it is a problem in non linear dynamcics where an inverted pendulum is balancing in a cart. The aim or final goal of both RL and GA are to keep it the system balanced until they run out of moves. the enviroment will be described in more detail nder the enviroment part.  
-
-Previous work in the comparison of GA versus RL include \cite{drugan2019reinforcement} which focuses on a comperhensive overview of recent trends in the feild rather than comparisons of subclasses of algorithms or particular aspects of RL and GA.
+\begin{figure}[H]
+    \centering
+    \includegraphics [scale = 0.2]{Images/cartpole.png}
+    \caption{the cartpole in 2D graphics}
+    \label{figRL}
+\end{figure}
+Previous work in the comparison of GA versus RL include \cite{drugan2019reinforcement} which focuses on a comperhensive overview of recent trends in the feild rather than comparisons of subclasses of algorithms or particular aspects of RL and GA. There a re also several works which focus on combining these two methods for mahcine learning by either using GA to train RL or vice versa such as \cite{eiben2007reinforcement} where the authurs try to use Reingforcment learnign to tune the parameters of GA. The opossite combination of training RL using GA has also been explored \cite{khadka2018evolutionary}.
 
 
 
