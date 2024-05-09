@@ -13,7 +13,7 @@ LEARNING_RATE = 0.1
 # Between 0 and 1, mesue of how much we carre about future reward over immedate reward
 # default = 0.95
 DISCOUNT = 1
-RUNS = 10000  # Number of iterations run
+RUNS = 20000  # Number of iterations run
 SHOW_EVERY = 2000  # How oftern the current solution is rendered
 UPDATE_EVERY = 100  # How oftern the current progress is recorded
 
@@ -27,6 +27,7 @@ epsilon_decay_value = epsilon / (END_EPSILON_DECAYING - START_EPSILON_DECAYING)
 PUNISHMENT_FELL_OVER = -375  # Punishment for falling over
 
 TIME_LIMIT = 500
+RANDOM_SEEDS_PATH = '../data/random_seeds.npy'
 
 # move working directory to the current file
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -100,8 +101,8 @@ previousCnt = []  # array of all scores over runs
 metrics = {'ep': [], 'avg': [], 'min': [], 'max': [], 'time': []}  # metrics recorded for graph
 
 # load random seeds
-if os.path.exists('../data/random_seeds.npy'):
-	seeds = np.load('../data/random_seeds.npy')
+if os.path.exists(RANDOM_SEEDS_PATH):
+	seeds = np.load(RANDOM_SEEDS_PATH)
 else:
 	seeds = np.random.randint(0, 2**32, RUNS)
 	print("Random seeds generated")

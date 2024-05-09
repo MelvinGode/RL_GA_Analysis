@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-SEED = 124
+SEED = 1445677
 NUM_BINS = 20
 def get_discrete_state(state, bins, obsSpaceSize):
 	stateIndex = []
@@ -42,8 +42,8 @@ if len(sys.argv) > 2:
   GAPath = sys.argv[2]
   qTable, bins, obsSpaceSize  = load_q_table(qTablePath)
 else:
-  qTable, bins, obsSpaceSize  = load_q_table('data/qTable_1714589135.npy')
-  population = np.load('../data/GA_v2_population_fitness_0.005_10.npy',allow_pickle=True)
+  qTable, bins, obsSpaceSize  = load_q_table('data/qTable_1715251781.npy')
+  population = np.load('../data/GA_v2_population_100_fitness_0.01_10.npy',allow_pickle=True)
 
 
 def test(qTable, env,  numEpisodes=1,  seed = SEED, GA = False, bins = bins, obsSpaceSize = obsSpaceSize):
@@ -89,12 +89,15 @@ def plot_results(qTable, best_ind):
 
 
 # RL test
+print('### RL Testing ###')
 test(qTable, env)
 
 # GA test
 best_ind = population[0]
 best_reward = 0
+print('### GA Testing ###')
 for i in range(len(population)):
+    print(f'Testing individual {i}')
     reward = test(population[i],env, GA = True) 
     if reward > best_reward:
         best_reward = reward

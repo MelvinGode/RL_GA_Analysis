@@ -14,10 +14,13 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 MAX_MOVES = 500
 OBS_SPACE_SIZE = 4
 NB_GEN = 200
-POP_SIZE = 50
-MUTATION_RATE = 0.005 # 0.005
+POP_SIZE = 100
+MUTATION_RATE = 0.01 # 0.005
 NP_SEED = 10 
-SELECTION = "rank" # fitness
+SELECTION = "fitness" # fitness
+ELITISM = 1 #  0
+CROSSOVER = "one_point" # uniform
+RANDOM_SEEDS_PATH = '../data/random_seeds.npy'
 np.random.seed(NP_SEED)
 
 import ga_functions as ga
@@ -76,10 +79,13 @@ env = gym.make("CartPole-v1")
 
 class GA_agent():
 
-    def __init__(self, selection, nb_gen, pop_size, mutation_rate, elitism=0):
+    def __init__(self, selection,nb_gen, pop_size, mutation_rate, elitism=0,crossover="uniform"):
         if selection == "rank" : self.select = ga.rank_selection
         elif selection=="fitness" : self.select = ga.fitness_selection
         else : return "Unknown selection method"
+        if crossover == "uniform" : self.crossover = ga.crossover
+        elif crossover == "one_point" : self.crossover = ga.one_point_crossover
+        else : return "Unknown crossover method"
 
         self.nb_gen = nb_gen
         self.pop_size = pop_size
@@ -99,10 +105,11 @@ class GA_agent():
         self.fitness_variance = np.empty(nb_gen)
 
         # if exists the file data/random_seed.npy, load it
-        if os.path.exists('../data/random_seed.npy'):
-            self.random_seed_array = np.load('../data/random_seed.npy')
+        if os.path.exists(RANDOM_SEEDS_PATH):
+            self.random_seed_array = np.load(RANDOM_SEEDS_PATH)
+            print(f"Random seeds loaded, shape: {self.random_seed_array.shape}")
         else:
-            self.random_seed_array = np.random.randint(0, 2**16, 10000)
+            self.random_seed_array = np.random.randint(0, 2**16, POP_SIZE*NB_GEN)
         self.current_random_seed = 0
 
     def evolve(self, env = gym.make("CartPole-v1")):
@@ -138,7 +145,8 @@ class GA_agent():
             # Mutation
             self.population = ga.mutation(self.population, self.mutation_rate, numBins=self.numBins)
             # Elitism
-            self.population[np.random.choice(range(self.pop_size))] = self.elite
+            if self.elitism:
+                self.population[np.random.choice(range(self.pop_size))] = self.elite
 
         env.close()
 
@@ -149,7 +157,7 @@ class GA_agent():
         plt.xlabel("Generation")
         plt.ylabel("Fitness")
         plt.title("Fitness over time")
-        plt.savefig(f'plots/GA_v2_evolution_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        plt.savefig(f'plots/GA_v2_evolution_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
         plt.show()
 
     def plot_evolution_per_second(self):
@@ -159,7 +167,7 @@ class GA_agent():
         plt.xlabel("Seconds of training")
         plt.ylabel("Fitness")
         plt.title("Fitness over training time")
-        plt.savefig(f'plots/GA_v2_evoluiton_per_second_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        plt.savefig(f'plots/GA_v2_evoluiton_per_second_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
         plt.show()
 
     def plot_diversity(self):
@@ -167,7 +175,7 @@ class GA_agent():
         plt.xlabel("Generation")
         plt.ylabel("Average gene STD")
         plt.title("Population diversity over time")
-        plt.savefig(f'plots/GA_v2_pop_diversity_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        plt.savefig(f'plots/GA_v2_pop_diversity_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
         plt.show()
 
     def plot_fitness_variance(self):
@@ -176,11 +184,11 @@ class GA_agent():
         plt.xlabel("Generation")
         plt.ylabel("Fitness variance")
         plt.title("Fitness variance over time")
-        plt.savefig(f'plots/GA_v2_fitnessvar_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        plt.savefig(f'plots/GA_v2_fitnessvar_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
         plt.show()
 
     def save_metrics(self):
-        name = f'data/GA_v2_metrics_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
+        name = f'data/GA_v2_metrics_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
         metrics = np.array({
             "max" : self.best_scores,
             "avg" : self.avg_scores,
@@ -190,11 +198,11 @@ class GA_agent():
         np.save(name, metrics)
 
     def savePopulation(self):
-        name = f'../data/GA_v2_population_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
+        name = f'../data/GA_v2_population_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
         np.save(name, self.population)
 
 
-agent = GA_agent(SELECTION, NB_GEN, POP_SIZE, MUTATION_RATE)
+agent = GA_agent(SELECTION, NB_GEN, POP_SIZE, MUTATION_RATE, elitism=ELITISM, crossover=CROSSOVER)
 
 agent.evolve()
 

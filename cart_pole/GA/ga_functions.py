@@ -39,6 +39,24 @@ def crossover(pairs, population, numBins=20, obsSpaceSize=4):
 
   return new_gen
 
+def one_point_crossover(pairs, population, crossoverpoint=8000,numBins=20, obsSpaceSize=4):
+  pop_size = population.shape[0]
+
+  new_gen = np.empty((pop_size, *([numBins] * obsSpaceSize)))
+  for pair_nb in range(pairs.shape[0]):
+    pair = pairs[pair_nb]
+    dad = population[pair[0],:]
+    mom = population[pair[1],:]
+
+    for i in range(len(dad)):
+      if i < crossoverpoint:
+        new_gen[2*pair_nb, i] = dad[i]
+        new_gen[2*pair_nb+1, i] = mom[i]
+      else:
+        new_gen[2*pair_nb, i] = mom[i]
+        new_gen[2*pair_nb+1, i] = dad[i]
+
+
 def mutation(population, mutation_rate, numBins=20):
   pop_size = population.shape[0]
 
