@@ -4,8 +4,10 @@ import gymnasium as gym
 import matplotlib.pyplot as plt
 import time
 import os
-
-
+from PIL import Image
+from IPython.core.display import Image as img
+import imageio
+import shutil
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -14,7 +16,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 MAX_MOVES = 500
 OBS_SPACE_SIZE = 4
 NB_GEN = 200
-POP_SIZE = 100
+POP_SIZE = 50
 MUTATION_RATE = 0.01 # 0.005
 NP_SEED = 10 
 SELECTION = "fitness" # fitness
@@ -24,6 +26,7 @@ CROSSOVER = "one_point" # uniform
 RANDOM_SEEDS_PATH = '../data/random_seeds.npy'
 np.random.seed(NP_SEED)
 SAVING = False
+SAVE_GIF = True
 
 import ga_functions as ga
 """Initial population creation"""
@@ -109,6 +112,8 @@ class GA_agent():
         self.time_samples = np.empty(nb_gen)
         self.fitness_variance = np.empty(nb_gen)
 
+        self.name = f"{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{ELITISM}_{NP_SEED}"
+
         # if exists the file data/random_seed.npy, load it
         if os.path.exists(RANDOM_SEEDS_PATH):
             self.random_seed_array = np.load(RANDOM_SEEDS_PATH)
@@ -157,6 +162,46 @@ class GA_agent():
 
         env.close()
 
+    def save_elite_gif(self, env = gym.make("CartPole-v1", render_mode='rgb_array')):
+
+        path = f'gifs/GA_v2_evolution_'+self.name
+        if os.path.exists(path): shutil.rmtree(path)
+        os.mkdir(path)
+
+        elite_individual = self.elite[-1]
+        env.reset()
+
+        discreteState = get_discrete_state(env.observation_space.high, self.bins, OBS_SPACE_SIZE)
+        for i in range(MAX_MOVES):
+            
+            action = elite_individual[discreteState]
+            obs, reward, terminated, truncated, info = env.step(action)
+
+            discreteState = get_discrete_state(obs, self.bins, OBS_SPACE_SIZE)
+
+            if terminated or truncated :
+                print(f"Saved {i} frames")
+                return 
+
+            screen = env.render()
+            im = Image.fromarray(screen).convert('RGB')
+            im.save(path+f'/{i}.png')
+
+    
+    def play_elite_gif(self):
+        i = 0
+        fnames = []
+        while os.path.exists(f'gifs/GA_v2_evolution_'+self.name+f'/{i}.png'):
+            fnames.append(f'gifs/GA_v2_evolution_'+self.name+f'/{i}.png')
+            i+=1
+
+        if i==0 : 
+            print("Please save a GIF before trying to play it")
+            return "Please save a GIF before trying to play it"
+
+        imageio.mimsave('gifs/GA_v2_evolution_'+self.name+'/anim.gif', [imageio.imread(fname) for fname in fnames])
+        return img(filename='gifs/GA_v2_evolution_'+self.name+'/anim.gif')
+
     def plot_evolution(self):
         plt.plot(self.best_scores, label="Best score")
         plt.plot(self.avg_scores, label="Average score")
@@ -164,7 +209,8 @@ class GA_agent():
         plt.xlabel("Generation")
         plt.ylabel("Fitness")
         plt.title("Fitness over time")
-        plt.savefig(f'plots/GA_v2_evolution_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        if SAVING:
+            plt.savefig(f'plots/GA_v2_evolution_'+self.path+'.png')
         plt.show()
 
     def plot_evolution_per_second(self):
@@ -174,7 +220,8 @@ class GA_agent():
         plt.xlabel("Seconds of training")
         plt.ylabel("Fitness")
         plt.title("Fitness over training time")
-        plt.savefig(f'plots/GA_v2_evoluiton_per_second_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        if SAVING:
+            plt.savefig(f'plots/GA_v2_evolution_per_second'+self.path+'.png')
         plt.show()
 
     def plot_diversity(self):
@@ -182,7 +229,8 @@ class GA_agent():
         plt.xlabel("Generation")
         plt.ylabel("Average gene STD")
         plt.title("Population diversity over time")
-        plt.savefig(f'plots/GA_v2_pop_diversity_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        if SAVING:
+            plt.savefig(f'plots/GA_v2_pop_diversity_'+self.path+'.png')
         plt.show()
 
     def plot_fitness_variance(self):
@@ -191,11 +239,12 @@ class GA_agent():
         plt.xlabel("Generation")
         plt.ylabel("Fitness variance")
         plt.title("Fitness variance over time")
-        plt.savefig(f'plots/GA_v2_fitnessvar_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.png')
+        if SAVING:
+            plt.savefig(f'plots/GA_v2_fitnessvar_'+self.path+'.png')
         plt.show()
 
     def save_metrics(self):
-        name = f'data/GA_v2_metrics_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
+        name = f'data/GA_v2_metrics_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{ELITISM}_{NP_SEED}.npy'
         metrics = np.array({
             "max" : self.best_scores,
             "avg" : self.avg_scores,
@@ -205,7 +254,7 @@ class GA_agent():
         np.save(name, metrics)
 
     def savePopulation(self):
-        name = f'../data/GA_v2_population_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{NP_SEED}.npy'
+        name = f'../data/GA_v2_population_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{ELITISM}_{NP_SEED}.npy'
         np.save(name, self.population)
 
 
@@ -217,6 +266,11 @@ agent.plot_evolution_per_second()
 agent.plot_evolution()
 agent.plot_diversity()
 agent.plot_fitness_variance()
+
+
+if SAVE_GIF :
+    agent.save_elite_gif()
+    agent.play_elite_gif()
 
 if SAVING :
     agent.savePopulation()
