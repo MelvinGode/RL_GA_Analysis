@@ -18,10 +18,12 @@ POP_SIZE = 100
 MUTATION_RATE = 0.01 # 0.005
 NP_SEED = 10 
 SELECTION = "fitness" # fitness
-ELITISM = 1 #  0
+ELITISM = 5 #  0
 CROSSOVER = "one_point" # uniform
+
 RANDOM_SEEDS_PATH = '../data/random_seeds.npy'
 np.random.seed(NP_SEED)
+SAVING = False
 
 import ga_functions as ga
 """Initial population creation"""
@@ -79,10 +81,11 @@ env = gym.make("CartPole-v1")
 
 class GA_agent():
 
-    def __init__(self, selection,nb_gen, pop_size, mutation_rate, elitism=0,crossover="uniform"):
+    def __init__(self, selection,nb_gen, pop_size, mutation_rate, elitism=0, crossover="uniform"):
         if selection == "rank" : self.select = ga.rank_selection
         elif selection=="fitness" : self.select = ga.fitness_selection
         else : return "Unknown selection method"
+
         if crossover == "uniform" : self.crossover = ga.crossover
         elif crossover == "one_point" : self.crossover = ga.one_point_crossover
         else : return "Unknown crossover method"
@@ -94,6 +97,8 @@ class GA_agent():
         self.population = create_population(pop_size)
         print(self.population.shape)
         self.mutation_rate = mutation_rate
+        if elitism>0 and elitism<1 : # Works with both number of elite individuals but also proportion of the population as parameter
+            elitism = int(elitism*pop_size)
         self.elitism = elitism
 
         self.best_score = 0
@@ -132,8 +137,10 @@ class GA_agent():
 
             now = time.time()
             self.time_samples[i] = now - start_time
-
-            self.elite = self.population[np.argmax(fit)].copy()
+            
+            if self.elitism :
+                elite_indices = np.argsort(fit)[-self.elitism:]
+                self.elite = self.population[elite_indices].copy()
 
             self.best_scores[i] = max(fit)
             self.avg_scores[i] = np.mean(fit)
@@ -146,7 +153,7 @@ class GA_agent():
             self.population = ga.mutation(self.population, self.mutation_rate, numBins=self.numBins)
             # Elitism
             if self.elitism:
-                self.population[np.random.choice(range(self.pop_size))] = self.elite
+                self.population[elite_indices] = self.elite
 
         env.close()
 
@@ -211,5 +218,6 @@ agent.plot_evolution()
 agent.plot_diversity()
 agent.plot_fitness_variance()
 
-agent.savePopulation()
-agent.save_metrics()
+if SAVING :
+    agent.savePopulation()
+    agent.save_metrics()
