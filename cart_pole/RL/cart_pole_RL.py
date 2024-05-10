@@ -4,7 +4,10 @@ import matplotlib.pyplot as plt
 import time
 import os
 
-
+from PIL import Image
+from IPython.core.display import Image as img
+import imageio
+import shutil
 
 env = gym.make('CartPole-v1', render_mode='rgb_array')
 
@@ -13,7 +16,7 @@ LEARNING_RATE = 0.1
 # Between 0 and 1, mesue of how much we carre about future reward over immedate reward
 # default = 0.95
 DISCOUNT = 1
-RUNS = 20000  # Number of iterations run
+RUNS = 2000  # Number of iterations run
 SHOW_EVERY = 2000  # How oftern the current solution is rendered
 UPDATE_EVERY = 100  # How oftern the current progress is recorded
 
@@ -168,9 +171,59 @@ for run in range(RUNS):
 
 env.close()
 
+def save_RL_gif():
+	env = gym.make("CartPole-v1", render_mode="rgb_array")
+	path = f'gifs/RL_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}'
+
+	if os.path.exists(path): shutil.rmtree(path)
+	os.mkdir(path)
+
+	observation, info = env.reset(seed = 1)
+	discreteState = get_discrete_state(env.observation_space.high, bins, obsSpaceSize)
+	done = False  # has the enviroment finished?
+	cnt = 0  # how may movements cart has made
+
+	while not done and cnt < TIME_LIMIT:
+		# Get action from Q table
+		action = np.argmax(qTable[discreteState])
+		newState, reward, done, _, info = env.step(action)  # perform action on enviroment
+
+		screen = env.render()
+		im = Image.fromarray(screen).convert('RGB')
+		im.save(path+f'/{cnt}.png')
+
+		discreteState = get_discrete_state(newState, bins, obsSpaceSize)
+
+		cnt += 1
+	
+	print(f"Saved {cnt} frames")
+
+
+def play_RL_GIF():
+	i = 0
+	fnames = []
+	name = f'{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}'
+	while os.path.exists(f'gifs/RL_'+name+f'/{i}.png'):
+		fnames.append(f'gifs/RL_'+name+f'/{i}.png')
+		i+=1
+
+	if i==0 : 
+		print("Please save a GIF before trying to play it")
+		return "Please save a GIF before trying to play it"
+
+	imageio.mimsave(f'gifs/RL_'+name+f'/anim.gif', [imageio.imread(fname) for fname in fnames])
+	return img(filename='gifs/RL_'+name+f'/anim.gif')
+
+
+
+save_RL_gif()
+play_RL_GIF()
+
+"""
 # Save qTable
 save_q_table(qTable, start_time)
 save_metrics(metrics, start_time)
 # Plot metrics
 plot_metrics(metrics, start_time)
 plot_time_metrics(metrics, start_time)
+"""

@@ -4,6 +4,7 @@ import gymnasium as gym
 import matplotlib.pyplot as plt
 import time
 import os
+
 from PIL import Image
 from IPython.core.display import Image as img
 import imageio
@@ -169,7 +170,7 @@ class GA_agent():
         os.mkdir(path)
 
         elite_individual = self.elite[-1]
-        env.reset()
+        env.reset(seed = 1)
 
         discreteState = get_discrete_state(env.observation_space.high, self.bins, OBS_SPACE_SIZE)
         for i in range(MAX_MOVES):
