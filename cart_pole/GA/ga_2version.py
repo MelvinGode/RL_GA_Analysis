@@ -112,6 +112,7 @@ class GA_agent():
         self.diversity = np.empty(nb_gen)
         self.time_samples = np.empty(nb_gen)
         self.fitness_variance = np.empty(nb_gen)
+        self.average_angle = 0
 
         self.name = f"{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{ELITISM}_{NP_SEED}"
 
@@ -135,7 +136,7 @@ class GA_agent():
 
             self.diversity[i] = ga.pop_diversity(self.population)
             print(f'### Generation {i}: starting playing... ###')
-            fit = play_gen(self.population, env, self.random_seed_array[self.current_random_seed: self.current_random_seed + self.pop_size],  bins = self.bins)
+            fit = self.play_gen(env, self.random_seed_array[self.current_random_seed: self.current_random_seed + self.pop_size],  bins = self.bins)
             self.current_random_seed += self.pop_size
 
             if max(fit) > self.best_score: self.best_score = max(fit)
@@ -161,7 +162,32 @@ class GA_agent():
             if self.elitism:
                 self.population[elite_indices] = self.elite
 
+        self.average_angle /= self.nb_gen*self.pop_size
+        print(f"Evolution finished with average (absolute) angle {self.average_angle}°")
         env.close()
+
+    def play_gen(self, env, random_seed_array, bins, obsSpaceSize=OBS_SPACE_SIZE, max_moves=MAX_MOVES):
+        fitnesses = np.empty(self.pop_size)
+        for i in range(self.pop_size):
+            env.reset(seed=int(random_seed_array[i]))
+            discreteState = get_discrete_state(env.observation_space.high, bins, obsSpaceSize)
+            #print(f'Individual {i}, play gen...')
+
+            run_total_angle = 0
+            for t in range(max_moves):
+            
+                action = self.population[i][discreteState]
+                observation, reward, done, info, blc = env.step(action)
+                run_total_angle += abs(observation[2])
+                discreteState = get_discrete_state(observation, bins, obsSpaceSize)
+                if done : break
+
+            fitnesses[i]=t
+            #print(f'Individual {i}, Fitness: {fitnesses[i]}')
+        
+        self.average_angle += run_total_angle/t
+
+        return fitnesses
 
     def save_elite_gif(self, env = gym.make("CartPole-v1", render_mode='rgb_array')):
 

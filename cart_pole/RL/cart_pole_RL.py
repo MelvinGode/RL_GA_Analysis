@@ -110,6 +110,7 @@ else:
 	seeds = np.random.randint(0, 2**32, RUNS)
 	print("Random seeds generated")
 
+average_angle = 0
 # add timer to measure learning time
 start_time = time.time()
 
@@ -119,6 +120,7 @@ for run in range(RUNS):
 	done = False  # has the enviroment finished?
 	cnt = 0  # how may movements cart has made
 
+	total_run_angle = 0
 	while not done and cnt < TIME_LIMIT:
 		if run % SHOW_EVERY == 0:
 			env.render()  # if running RL comment this out
@@ -131,6 +133,7 @@ for run in range(RUNS):
 		else:
 			action = np.random.randint(0, env.action_space.n)
 		newState, reward, done, _, info = env.step(action)  # perform action on enviroment
+		total_run_angle += abs(newState[2])
 
 		newDiscreteState = get_discrete_state(newState, bins, obsSpaceSize)
 
@@ -147,6 +150,8 @@ for run in range(RUNS):
 
 		discreteState = newDiscreteState
 	
+	average_angle += total_run_angle / cnt
+
 	# Record time metric
 	if run % UPDATE_EVERY == 0:
 		end_time = time.time()
@@ -168,8 +173,11 @@ for run in range(RUNS):
 		metrics['time'].append(end_time - start_time)
 		print("Run:", run, "Average:", averageCnt, "Min:", min(latestRuns), "Max:", max(latestRuns))
 
+average_angle /= RUNS
 
 env.close()
+
+print(f"Training finieshed with average (absolute) angle {average_angle}°")
 
 def save_RL_gif():
 	env = gym.make("CartPole-v1", render_mode="rgb_array")
