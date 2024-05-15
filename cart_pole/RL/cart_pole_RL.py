@@ -16,7 +16,7 @@ LEARNING_RATE = 0.1
 # Between 0 and 1, mesue of how much we carre about future reward over immedate reward
 # default = 0.95
 DISCOUNT = 1
-RUNS = 2000  # Number of iterations run
+RUNS = 20000  # Number of iterations run
 SHOW_EVERY = 2000  # How oftern the current solution is rendered
 UPDATE_EVERY = 100  # How oftern the current progress is recorded
 
@@ -28,6 +28,8 @@ epsilon_decay_value = epsilon / (END_EPSILON_DECAYING - START_EPSILON_DECAYING)
 
 # original value: -375
 PUNISHMENT_FELL_OVER = -375  # Punishment for falling over
+
+SEED = 1235555
 
 TIME_LIMIT = 500
 RANDOM_SEEDS_PATH = '../data/random_seeds.npy'
@@ -65,7 +67,7 @@ def get_discrete_state(state, bins, obsSpaceSize):
 
 # function for saving the final qtabel
 def save_q_table(qTable, ts):
-	np.save(f"data/qTable_{int(ts)}.npy", qTable)
+	np.save(f"data/qTable_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}.npy", qTable)
 
 
 # Plot graph
@@ -78,7 +80,7 @@ def plot_metrics(metrics, ts):
 	plt.legend(loc=4)
 	#plt.show()
 	# save plot
-	plt.savefig(f"plots/metrics_{int(ts)}.png")
+	plt.savefig(f"plots/metrics_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}.png")
 	plt.clf()
 
 
@@ -90,7 +92,7 @@ def plot_time_metrics(metrics, ts):
 	plt.plot(metrics['time'], metrics['max'], label="max rewards")
 	plt.title("Reward over time")
 	plt.legend(loc=4)
-	plt.savefig(f"plots/time_metrics_{int(ts)}.png")
+	plt.savefig(f"plots/time_metrics_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}.png")
 	plt.clf()
 
 
@@ -110,6 +112,7 @@ else:
 	seeds = np.random.randint(0, 2**32, RUNS)
 	print("Random seeds generated")
 
+average_angle = 0
 # add timer to measure learning time
 start_time = time.time()
 
@@ -119,6 +122,7 @@ for run in range(RUNS):
 	done = False  # has the enviroment finished?
 	cnt = 0  # how may movements cart has made
 
+	total_run_angle = 0
 	while not done and cnt < TIME_LIMIT:
 		if run % SHOW_EVERY == 0:
 			env.render()  # if running RL comment this out
@@ -131,6 +135,7 @@ for run in range(RUNS):
 		else:
 			action = np.random.randint(0, env.action_space.n)
 		newState, reward, done, _, info = env.step(action)  # perform action on enviroment
+		total_run_angle += abs(newState[2])
 
 		newDiscreteState = get_discrete_state(newState, bins, obsSpaceSize)
 
@@ -147,6 +152,8 @@ for run in range(RUNS):
 
 		discreteState = newDiscreteState
 	
+	average_angle += total_run_angle / cnt
+
 	# Record time metric
 	if run % UPDATE_EVERY == 0:
 		end_time = time.time()
@@ -168,17 +175,20 @@ for run in range(RUNS):
 		metrics['time'].append(end_time - start_time)
 		print("Run:", run, "Average:", averageCnt, "Min:", min(latestRuns), "Max:", max(latestRuns))
 
+average_angle /= RUNS
 
 env.close()
 
+print(f"Training finieshed with average (absolute) angle {average_angle}°")
+
 def save_RL_gif():
 	env = gym.make("CartPole-v1", render_mode="rgb_array")
-	path = f'gifs/RL_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}'
+	path = f'gifs/RL_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}_{SEED}'
 
 	if os.path.exists(path): shutil.rmtree(path)
 	os.mkdir(path)
 
-	observation, info = env.reset(seed = 1)
+	observation, info = env.reset(seed = SEED)
 	discreteState = get_discrete_state(env.observation_space.high, bins, obsSpaceSize)
 	done = False  # has the enviroment finished?
 	cnt = 0  # how may movements cart has made
@@ -202,7 +212,7 @@ def save_RL_gif():
 def play_RL_GIF():
 	i = 0
 	fnames = []
-	name = f'{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}'
+	name = f'{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}_{SEED}'
 	while os.path.exists(f'gifs/RL_'+name+f'/{i}.png'):
 		fnames.append(f'gifs/RL_'+name+f'/{i}.png')
 		i+=1
@@ -219,11 +229,10 @@ def play_RL_GIF():
 save_RL_gif()
 play_RL_GIF()
 
-"""
+
 # Save qTable
 save_q_table(qTable, start_time)
 save_metrics(metrics, start_time)
 # Plot metrics
 plot_metrics(metrics, start_time)
 plot_time_metrics(metrics, start_time)
-"""

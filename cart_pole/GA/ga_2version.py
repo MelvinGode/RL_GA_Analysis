@@ -17,16 +17,16 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 MAX_MOVES = 500
 OBS_SPACE_SIZE = 4
 NB_GEN = 200
-POP_SIZE = 50
-MUTATION_RATE = 0.01 # 0.005
+POP_SIZE = 100
+MUTATION_RATE = 0.005 # 0.005
 NP_SEED = 10 
 SELECTION = "fitness" # fitness
-ELITISM = 5 #  0
+ELITISM = 2 #  0
 CROSSOVER = "one_point" # uniform
 
 RANDOM_SEEDS_PATH = '../data/random_seeds.npy'
 np.random.seed(NP_SEED)
-SAVING = False
+SAVING = True
 SAVE_GIF = True
 
 import ga_functions as ga
@@ -112,6 +112,7 @@ class GA_agent():
         self.diversity = np.empty(nb_gen)
         self.time_samples = np.empty(nb_gen)
         self.fitness_variance = np.empty(nb_gen)
+        self.average_angle = 0
 
         self.name = f"{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{ELITISM}_{NP_SEED}"
 
@@ -135,7 +136,7 @@ class GA_agent():
 
             self.diversity[i] = ga.pop_diversity(self.population)
             print(f'### Generation {i}: starting playing... ###')
-            fit = play_gen(self.population, env, self.random_seed_array[self.current_random_seed: self.current_random_seed + self.pop_size],  bins = self.bins)
+            fit = self.play_gen(env, self.random_seed_array[self.current_random_seed: self.current_random_seed + self.pop_size],  bins = self.bins)
             self.current_random_seed += self.pop_size
 
             if max(fit) > self.best_score: self.best_score = max(fit)
@@ -161,7 +162,32 @@ class GA_agent():
             if self.elitism:
                 self.population[elite_indices] = self.elite
 
+        self.average_angle /= self.nb_gen*self.pop_size
+        print(f"Evolution finished with average (absolute) angle {self.average_angle}°")
         env.close()
+
+    def play_gen(self, env, random_seed_array, bins, obsSpaceSize=OBS_SPACE_SIZE, max_moves=MAX_MOVES):
+        fitnesses = np.empty(self.pop_size)
+        for i in range(self.pop_size):
+            env.reset(seed=int(random_seed_array[i]))
+            discreteState = get_discrete_state(env.observation_space.high, bins, obsSpaceSize)
+            #print(f'Individual {i}, play gen...')
+
+            run_total_angle = 0
+            for t in range(max_moves):
+            
+                action = self.population[i][discreteState]
+                observation, reward, done, info, blc = env.step(action)
+                run_total_angle += abs(observation[2])
+                discreteState = get_discrete_state(observation, bins, obsSpaceSize)
+                if done : break
+
+            fitnesses[i]=t
+            #print(f'Individual {i}, Fitness: {fitnesses[i]}')
+        
+        self.average_angle += run_total_angle/t
+
+        return fitnesses
 
     def save_elite_gif(self, env = gym.make("CartPole-v1", render_mode='rgb_array')):
 
@@ -211,7 +237,7 @@ class GA_agent():
         plt.ylabel("Fitness")
         plt.title("Fitness over time")
         if SAVING:
-            plt.savefig(f'plots/GA_v2_evolution_'+self.path+'.png')
+            plt.savefig(f'plots/GA_v2_evolution_'+self.name+'.png')
         plt.show()
 
     def plot_evolution_per_second(self):
@@ -222,7 +248,7 @@ class GA_agent():
         plt.ylabel("Fitness")
         plt.title("Fitness over training time")
         if SAVING:
-            plt.savefig(f'plots/GA_v2_evolution_per_second'+self.path+'.png')
+            plt.savefig(f'plots/GA_v2_evolution_per_second'+self.name+'.png')
         plt.show()
 
     def plot_diversity(self):
@@ -231,7 +257,7 @@ class GA_agent():
         plt.ylabel("Average gene STD")
         plt.title("Population diversity over time")
         if SAVING:
-            plt.savefig(f'plots/GA_v2_pop_diversity_'+self.path+'.png')
+            plt.savefig(f'plots/GA_v2_pop_diversity_'+self.name+'.png')
         plt.show()
 
     def plot_fitness_variance(self):
@@ -241,11 +267,11 @@ class GA_agent():
         plt.ylabel("Fitness variance")
         plt.title("Fitness variance over time")
         if SAVING:
-            plt.savefig(f'plots/GA_v2_fitnessvar_'+self.path+'.png')
+            plt.savefig(f'plots/GA_v2_fitnessvar_'+self.name+'.png')
         plt.show()
 
     def save_metrics(self):
-        name = f'data/GA_v2_metrics_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{ELITISM}_{NP_SEED}.npy'
+        name = f'data/GA_v2_metrics_+{self.name}.npy'
         metrics = np.array({
             "max" : self.best_scores,
             "avg" : self.avg_scores,
@@ -255,7 +281,7 @@ class GA_agent():
         np.save(name, metrics)
 
     def savePopulation(self):
-        name = f'../data/GA_v2_population_{POP_SIZE}_{SELECTION}_{self.mutation_rate}_{ELITISM}_{NP_SEED}.npy'
+        name = f'../data/GA_v2_population_{self.name}.npy'
         np.save(name, self.population)
 
 

@@ -22,8 +22,8 @@ if len(sys.argv) > 1:
     GA_filename = sys.argv[1]
     RL_filename = sys.argv[2]
 else:
-    GA_filename = 'GA_v2_metrics_1714656043.1256497.npy'
-    RL_filename = 'metrics_1714589135.npy'
+    GA_filename = 'GA_v2_metrics_+100_fitness_0.005_fitness_2_10.npy'
+    RL_filename = 'metrics_1715514318.npy'
 
 # Load data from GA/data
 ga_data = np.load(f'GA/data/{GA_filename}', allow_pickle=True).item()

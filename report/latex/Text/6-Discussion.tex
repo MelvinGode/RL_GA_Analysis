@@ -1,8 +1,10 @@
 \section{Discussion}
 % Delete the text and write your Discussion here:
 %------------------------------------
-Originally, when only trying the action by action approach in GA, we were scared that our results might be very one sided, with very poor performances for GA and no real generalization capacities.
-However, it was very interesting to see that Genetic Algorithm performed much better when combining it with features from Reinforcement Learing -namely the \textit{Q-table}.
+Originally, when only trying the action-by-action approach in GA, observations led to one-sided results due to the dependency of the genotype on the initial state, leading to poor performances for GA implementation and no real generalization capacities.
+However, it was very interesting to see that the Genetic Algorithm performed much better when combining it with features from Reinforcement Learning - namely the \textit{Q-table}.
 
-It is still important to keep in mind that a specific method we used in this project was the \textit{state discretization}, which allowed us to use the afformentioned tabular approach.
-Without this, we would have had to take a different and more elaborate direction. In particular, we thought of exploring the path of function approximation which is a very common approach in continuous state problems in RL, but we could not see simple adaptations to bring it to GA.
+The obtained results could be possible thanks to the \textit{state discretization}, which allowed us to use the aforementioned tabular approach.
+Without the state discretization approach, different and more elaborate directions should have been considered. 
+A discussed alternative could be exploring the path of function approximation, which is a very common approach in continuous state problems in RL, 
+but no further experiments have been conducted in this direction due to the complex adaptations of this technique to the GA algorithm.
