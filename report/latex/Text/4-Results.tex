@@ -1,6 +1,18 @@
 \section{Results}
 
 \subsection{Training comparison}
+
+The training phase of a Reinforcement Learning agent and a Genetic Algorithm are fundamentally different.
+Therefore, we had to find a way to harmonize the training data of the two methods in order to compare them.
+\\
+Our first idea was to consider RL episodes the same as GA individuals and aggregate the RL performances to match the number of generations used for GA.
+For example if we had a population size of $k$ for our Genetic Algorithm, we would take the max and mean of every last $k$ Reinforcement Learning episodes to compare them with each GA generation.
+\\
+Due to the inherent difference between GA which performs a form of parallel search and RL which iteratively improves each episode, we decided to not alter the training data at all and take a more empirical approach.
+The comparison we ended up using is thus simply tracking the training time (in seconds) and plotting the performances achieved over time. (Of course both algorithms need to be ran on the same machine for a fair comparison).
+\\
+Let us take a look at both average and best results achieved over training time for our two methods.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics [scale = 0.5]{Images/RL_GA_comparison_avg.png}

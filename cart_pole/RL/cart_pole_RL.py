@@ -29,6 +29,10 @@ epsilon_decay_value = epsilon / (END_EPSILON_DECAYING - START_EPSILON_DECAYING)
 # original value: -375
 PUNISHMENT_FELL_OVER = -375  # Punishment for falling over
 
+USING_SARSA = False
+SAVING = True
+SAVE_GIF = True
+
 SEED = 1235555
 
 TIME_LIMIT = 500
@@ -80,7 +84,9 @@ def plot_metrics(metrics, ts):
 	plt.legend(loc=4)
 	#plt.show()
 	# save plot
-	plt.savefig(f"plots/metrics_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}.png")
+	if SAVING:
+		plt.savefig(f"plots/metrics_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}.png")
+	plt.show()
 	plt.clf()
 
 
@@ -92,8 +98,10 @@ def plot_time_metrics(metrics, ts):
 	plt.plot(metrics['time'], metrics['max'], label="max rewards")
 	plt.title("Reward over time")
 	plt.legend(loc=4)
-	plt.savefig(f"plots/time_metrics_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}.png")
+	if SAVING:
+		plt.savefig(f"plots/time_metrics_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}.png")
 	plt.clf()
+	plt.show()
 
 
 def save_metrics(metrics, ts):
@@ -140,6 +148,10 @@ for run in range(RUNS):
 		newDiscreteState = get_discrete_state(newState, bins, obsSpaceSize)
 
 		maxFutureQ = np.max(qTable[newDiscreteState])  # estimate of optiomal future value
+		# SARSA Version :
+		if USING_SARSA and np.random.random() < epsilon :
+			maxFutureQ = np.random.choice(qTable[newDiscreteState])
+
 		currentQ = qTable[discreteState + (action, )]  # old value
 
 		# pole fell over / went out of bounds, negative reward
@@ -212,7 +224,10 @@ def save_RL_gif():
 def play_RL_GIF():
 	i = 0
 	fnames = []
-	name = f'{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}_{SEED}'
+	if USING_SARSA:
+		name = f'SARSA_{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}_{SEED}'
+	else :
+		name = f'{DISCOUNT}_{RUNS}_{END_EPSILON_DECAYING}_{PUNISHMENT_FELL_OVER}_{SEED}'
 	while os.path.exists(f'gifs/RL_'+name+f'/{i}.png'):
 		fnames.append(f'gifs/RL_'+name+f'/{i}.png')
 		i+=1
@@ -225,14 +240,15 @@ def play_RL_GIF():
 	return img(filename='gifs/RL_'+name+f'/anim.gif')
 
 
-
-save_RL_gif()
-play_RL_GIF()
-
+if SAVE_GIF:
+	save_RL_gif()
+	play_RL_GIF()
 
 # Save qTable
-save_q_table(qTable, start_time)
-save_metrics(metrics, start_time)
+if SAVING :
+	save_q_table(qTable, start_time)
+	save_metrics(metrics, start_time)
+
 # Plot metrics
 plot_metrics(metrics, start_time)
 plot_time_metrics(metrics, start_time)
