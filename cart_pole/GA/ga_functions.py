@@ -14,7 +14,8 @@ def rank_selection(fitnesses):
     half_pop_size = int(len(fitnesses)/2)
     pairs = np.empty((half_pop_size,2))
 
-    selection_probabilities = np.argsort(fitnesses)/sum(range(len(fitnesses)))
+    ranks = np.argsort(np.argsort(fitnesses)) + 1
+    selection_probabilities = ranks / ranks.sum()
 
     for i in range(half_pop_size):
       pairs[i] = np.random.choice(range(len(fitnesses)), size=2, p=selection_probabilities, replace=False)

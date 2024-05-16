@@ -16,13 +16,13 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 MAX_MOVES = 500
 OBS_SPACE_SIZE = 4
-NB_GEN = 200
+NB_GEN = 100
 POP_SIZE = 100
-MUTATION_RATE = 0.02 # 0.005
+MUTATION_RATE = 0.05 # 0.005
 NP_SEED = 10 
-SELECTION = "fitness" # fitness
+SELECTION = "rank" # fitness
 ELITISM = 2 #  0
-CROSSOVER = "one_point" # uniform
+CROSSOVER = "uniform" # uniform
 
 RANDOM_SEEDS_PATH = '../data/random_seeds.npy'
 np.random.seed(NP_SEED)
@@ -59,25 +59,6 @@ def get_discrete_state(state, bins, obsSpaceSize):
 
 
 """###Environment functions"""
-
-def play_gen(population, env, random_seed_array, bins, obsSpaceSize=OBS_SPACE_SIZE, max_moves=MAX_MOVES):
-  pop_size = population.shape[0]
-  fitnesses = np.empty(pop_size)
-  for i in range(pop_size):
-    env.reset(seed=int(random_seed_array[i]))
-    discreteState = get_discrete_state(env.observation_space.high, bins, obsSpaceSize)
-    #print(f'Individual {i}, play gen...')
-    for t in range(max_moves):
-      
-      action = population[i][discreteState]
-      observation, reward, done, info, blc = env.step(action)
-      discreteState = get_discrete_state(observation, bins, obsSpaceSize)
-      if done : break
-
-    fitnesses[i]=t
-    #print(f'Individual {i}, Fitness: {fitnesses[i]}')
-
-  return fitnesses
 
 """###Environment creation"""
 
