@@ -45,7 +45,7 @@ The parameters used in the experiments are the following:
 		\hline
 		{\textbf{Discount factor $\gamma$}} & {1} \\
 		\hline
-		{\textbf{Number of episodes $n_{ep}$}} & {100} \\
+		{\textbf{Number of episodes $n_{ep}$}} & {20000} \\
 		\hline
 		{\textbf{Exploration rate $\varepsilon$}}  & {variable} \\
 		\hline
@@ -92,15 +92,17 @@ The GA parameters can be found in the following table :
 		\hline
 		{\textbf{Genotype}} &  {Q-table} \\
 		\hline
-		{\textbf{Population Size}} & {50} \\
+		{\textbf{Population Size}} & {100} \\
 		\hline
 		{\textbf{Generations}} & {200} \\
 		\hline
-		{\textbf{Selection}}  & {Rank} \\
+		{\textbf{Selection}}  & {Fitness} \\
 		\hline
-		{\textbf{Mutation Rate}} & {0.05} \\
+		{\textbf{Mutation Rate}} & {0.005} \\
 		\hline
-		{\textbf{Crossover}}& {Uniform} \\
+		{\textbf{Crossover}}& {one-point} \\
+		\hline
+		{\textbf{\textcolor{blue}{Elitism}}}& {\textcolor{blue}{2} } \\
 		\hline
 
 	\end{tabular}

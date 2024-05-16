@@ -1,0 +1,2 @@
+cart_pole/data/GA_v2_population_100_fitness_0.005_fitness_2_10.npy filter=lfs diff=lfs merge=lfs -text
+cart_pole/data/GA_v2_population_100_fitness_0.005_fitness_2_10_filippo.npy filter=lfs diff=lfs merge=lfs -text
