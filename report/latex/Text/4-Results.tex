@@ -36,6 +36,15 @@ However, the other side of this described coin is that, with less stability prov
 When looking at figure \ref{figAVG}, it is very interesting to note these very similar performances between the two algorithms at 10 to 20 seconds of training, before RL jumps much higher while GA keeps plateau-ing at the same level.
 An explanation to the phenomenon might be that RL iteratively tweeks the same solution to perform better which allows to fix encountered problems. Meanwhile, GA might provide too much change over each generation to slowly improve an existing solution further, explaining the flattening out of performance.
 
+\\
+\textbf{Angle magnitude difference.}\\
+Another difference between the two approach is the behavior of the agent during the game itself.
+This was only made visible once GIFs were generated to view sample games. It became apparent that the RL trained agent was taking way wider swings and generally playing more "on the edge" than the GA trained agent who is keeping the pole more straight and moving more cautiously.
+This initial obsevation was confirmed more quantitatively, by measuring the average absolute value of the angle of the pole during every episode of training.
+Indeed, it turns out that the average absolute value of the angle is consistently two orders of magnitude greater during RL training than during GA training.
+\\
+This last remark might be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
+
 
 \subsection{final model comparison}
 
