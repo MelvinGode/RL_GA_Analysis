@@ -18,7 +18,7 @@ MAX_MOVES = 500
 OBS_SPACE_SIZE = 4
 NB_GEN = 200
 POP_SIZE = 100
-MUTATION_RATE = 0.005 # 0.005
+MUTATION_RATE = 0.02 # 0.005
 NP_SEED = 10 
 SELECTION = "fitness" # fitness
 ELITISM = 2 #  0
@@ -140,7 +140,7 @@ class GA_agent():
             self.current_random_seed += self.pop_size
 
             if max(fit) > self.best_score: self.best_score = max(fit)
-            self.fitness_variance[i] = np.var(fit)
+            self.fitness_variance[i] = np.std(fit)
 
             now = time.time()
             self.time_samples[i] = now - start_time
@@ -264,8 +264,8 @@ class GA_agent():
         plt.plot(self.fitness_variance, color="crimson")
         plt.legend()
         plt.xlabel("Generation")
-        plt.ylabel("Fitness variance")
-        plt.title("Fitness variance over time")
+        plt.ylabel("Fitness STD")
+        plt.title("Fitness standard deviation over time")
         if SAVING:
             plt.savefig(f'plots/GA_v2_fitnessvar_'+self.name+'.png')
         plt.show()
