@@ -16,14 +16,14 @@ Let us take a look at both average and best results achieved over training time 
 \begin{figure}[H]
 	\centering
 	\includegraphics [scale = 0.5]{Images/RL_GA_comparison_avg.png}
-	\caption{placeholer}
+	\caption{Evolution of mean score within last 100 games played}
 	\label{figAVG}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics [scale = 0.5]{Images/RL_GA_comparison_max.png}
-	\caption{placeholer}
+	\caption{Evolution of max score within last 100 games played}
 	\label{figMAX}
 \end{figure}
 
@@ -41,6 +41,7 @@ Another difference between the two approach is the behavior of the agent during 
 This was only made visible once GIFs were generated to view sample games. It became apparent that the RL trained agent was taking way wider swings and generally playing more "on the edge" than the GA trained agent who is keeping the pole more straight and moving more cautiously.
 This initial obsevation was confirmed more quantitatively, by measuring the average absolute value of the angle of the pole during every episode of training.
 Indeed, it turns out that the average absolute value of the angle is consistently two orders of magnitude greater during RL training than during GA training.
+Since it doesn't penalize exploratory moves, Q-Learning specifically is known to be more prone to taking risks than other RL techniques. However, we tried using SARSA (another RL method without this feature) and still confirmed the same results.
 \\
 This last remark might be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
 
