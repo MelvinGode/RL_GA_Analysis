@@ -3,27 +3,27 @@
 \subsection{Training comparison}
 
 The training phase of a Reinforcement Learning agent and a Genetic Algorithm are fundamentally different.
-Therefore, we had to find a way to harmonize the training data of the two methods in order to compare them.
+Therefore, a way to harmonize the training data of the two methods in order to compare them has to be found.
 \\
-Our first idea was to consider RL episodes the same as GA individuals and aggregate the RL performances to match the number of generations used for GA.
-For example if we had a population size of $k$ for our Genetic Algorithm, we would take the max and mean of every last $k$ Reinforcement Learning episodes to compare them with each GA generation.
+The first approach is to consider RL episodes the same as GA individuals and aggregate the RL performances to match the number of generations used for GA.
+For example considering a population size of $k$ for the Genetic Algorithm, the max and mean of every $k$ Reinforcement Learning episodes have been considered to compare them with each GA generation.
 \\
-Due to the inherent difference between GA which performs a form of parallel search and RL which iteratively improves each episode, we decided to not alter the training data at all and take a more empirical approach.
-The comparison we ended up using is thus simply tracking the training time (in seconds) and plotting the performances achieved over time. (Of course both algorithms need to be ran on the same machine for a fair comparison).
+Due to the inherent difference between GA which performs a form of parallel search and RL which iteratively improves each episode, led to the decision of not altering the training data and take a more empirical approach.
+The comparison obtained using is thus simply tracking the training time (in seconds) and plotting the performances achieved over time. (Of course both algorithms need to be ran on the same machine for a fair comparison).
 \\
-Let us take a look at both average and best results achieved over training time for our two methods.
+Figure \ref{figAVG} and Figure \ref{figMAX} shows both average and best results achieved over training time for our two methods.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics [scale = 0.5]{Images/RL_GA_comparison_avg.png}
-	\caption{Evolution of mean score within last 100 games played}
+	\caption{Evolution of mean score in time of both the two algorithms.}
 	\label{figAVG}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics [scale = 0.5]{Images/RL_GA_comparison_max.png}
-	\caption{Evolution of max score within last 100 games played}
+	\caption{Evolution of max score in time of both the two algorithms.}
 	\label{figMAX}
 \end{figure}
 
@@ -33,53 +33,19 @@ This can be explained by the fact that GA performs parallel search and that the 
 These two factors create more variety in the achieved solutions and by retaining the best out of them, it is easy to see how we might arrive earlier to a viable solution.
 \\
 However, the other side of this described coin is that, with less stability provided by GA, comes a harder time in making specific and iterative changes to a solution.
-When looking at figure \ref{figAVG}, it is very interesting to note these very similar performances between the two algorithms at 10 to 20 seconds of training, before RL jumps much higher while GA keeps plateau-ing at the same level.
+Looking at figure \ref{figAVG}, it is very interesting to note these very similar performances between the two algorithms at 10 to 20 seconds of training, before RL jumps much higher while GA keeps plateau-ing at the same level.
 An explanation to the phenomenon might be that RL iteratively tweeks the same solution to perform better which allows to fix encountered problems. Meanwhile, GA might provide too much change over each generation to slowly improve an existing solution further, explaining the flattening out of performance.
 
 \subsubsection{Angle magnitude difference.}
 Another difference between the two approach is the behavior of the agent during the game itself.
-This was only made visible once GIFs were generated to view sample games. It became apparent that the RL trained agent was taking way wider swings and generally playing more "on the edge" than the GA trained agent who is keeping the pole more straight and moving more cautiously.
+This was only made visible once GIFs were generated to view sample games, as resumed in Figure \ref{fig:framesRL} for the reinforcement learning agent and Figure \ref{fig:framesGA} for the genetic algorithm last generation. 
+It became apparent that the RL trained agent was taking way wider swings and generally playing more "on the edge" than the GA trained agent who is keeping the pole more straight and moving more cautiously.
 This initial obsevation was confirmed more quantitatively, by measuring the average absolute value of the angle of the pole during every episode of training.
 Indeed, it turns out that the average absolute value of the angle is consistently two orders of magnitude greater during RL training than during GA training.
 Since it doesn't penalize exploratory moves, Q-Learning specifically is known to be more prone to taking risks than other RL techniques. However, we tried using SARSA (another RL method without this feature) and still confirmed the same results.
 \\
 This last remark might be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
 
-
-\subsection{final model comparison}
-
-The second approach used to compare the obtained results is based on the final models' observations.
-
-\subsubsection{State-Action table}
-
-Figure \ref{figTABLEDIFF} shows the difference between the two obtained state-action tables of the final reinforcement learning agent and one of the individuals from the last generation of the genetic algorithm.
-
-Since the \textit{Q-Table} does not provide an exact chosen action given a state, the compared state-action table of the reinforcement learning agent used in Figure \ref{figTABLEDIFF} is obtained by selecting the action $a$ of the state $s$ based on $argmax_{a_i} (Q(s,a_i))$.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics [scale = 0.7]{Images/diff.png}
-	\caption{Difference between the two state-action tables obtained using GA and RL. The black pixels represent the states where the chosen action is the same, while white pixels represent a different action choice. The x-axis contains all the possible pairs of the first two elements of the state's 4D-vector, $(s_1,s_2)$, and the y-axis contains all the possible pairs of the last two elements, $(s_3,s_4)$. }
-	\label{figTABLEDIFF}
-\end{figure}
-
-Looking into Figure \ref{figTABLEDIFF}, it is possible to observe how the actions selected by the two algorithms differ in various states. However, some wide areas where the action taken by both algorithms is the same can be spotted, which could be referred to as sensitive states where considering a different choice could lead the pole to fall down.\\
-
-\subsubsection{Testing performances}
-
-Figure \ref{figRLvsGA} shows the final testing results of the two methods. As already showed by the traning comparison in both figure \ref{figAVG} and figure \ref{figMAX}, The reinforcement learning agent showed a better generalization ability and more understanding of the environment, leading to obtain better results.\\
-The testing has been conducted as follow: the environment has been seeded with ten different seeds and for every execution the same environment has been provided to both the algorithm.
-The reinforcement learning agent has been tested using the obtained \textit{q-table} from the training, the genetic algorithm population is the last generation of the training performed.\\
-Every individual of the GA population have been tested for all the tests, and the best one has been considered for the comparison, during the testing of the population, no particular difference have been noticed between the reward obtained by the individuals.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics [width=0.5\textwidth]{Images/GAvRL_backup.png}
-	\caption{The plot shows the results obtained testing the two models on the same test set. The x-axis represents the number of the test set, the y-axis the number of steps the model was able to take before reaching the goal. The blue line represents the results obtained using the model trained with the GA, the red line the results obtained using the model trained with the RL.}
-	\label{figRLvsGA}
-\end{figure}
-
-Observing the results, some differences regarding the variance can be noticed: the GA population seem to obtain more consistent results in different tests, but due the fact that the testing is performed on the entire generation this could be related to the fact that every time the best individual is extracted.\\
 
 % RL FRAMES %
 \begin{figure}[H]
@@ -143,7 +109,7 @@ Observing the results, some differences regarding the variance can be noticed: t
 		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/RL/12.png}
 	\end{subfigure}
-	\caption{Frames RL}
+	\caption{First 12 frames of a game played by the reinforcement learning agent, as can be seen the agent is taking wider swings and playing more "on the edge" than the GA trained agent.}
 	\label{fig:framesRL}
 \end{figure}
 % GA FRAMES %
@@ -179,7 +145,7 @@ Observing the results, some differences regarding the variance can be noticed: t
 		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/GA/6.png}
 	\end{subfigure}
-		\\
+	\\
 	\begin{subfigure}
 		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/GA/7.png}
@@ -209,9 +175,45 @@ Observing the results, some differences regarding the variance can be noticed: t
 		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/GA/12.png}
 	\end{subfigure}
-	\caption{Frames GA}
+	\caption{First 12 frames of a game played by the genetic algorithm last generation, as can be seen the agent is keeping the pole more straight and moving more cautiously.}
 	\label{fig:framesGA}
 \end{figure}
+
+
+\subsection{final model comparison}
+
+The second approach used to compare the obtained results is based on the final models' observations.
+
+\subsubsection{State-Action table}
+
+Figure \ref{figTABLEDIFF} shows the difference between the two obtained state-action tables of the final reinforcement learning agent and one of the individuals from the last generation of the genetic algorithm.
+
+Since the \textit{Q-Table} does not provide an exact chosen action given a state, the compared state-action table of the reinforcement learning agent used in Figure \ref{figTABLEDIFF} is obtained by selecting the action $a$ of the state $s$ based on $argmax_{a_i} (Q(s,a_i))$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics [scale = 0.7]{Images/diff.png}
+	\caption{Difference between the two state-action tables obtained using GA and RL. The black pixels represent the states where the chosen action is the same, while white pixels represent a different action choice. The x-axis contains all the possible pairs of the first two elements of the state's 4D-vector, $(s_1,s_2)$, and the y-axis contains all the possible pairs of the last two elements, $(s_3,s_4)$. }
+	\label{figTABLEDIFF}
+\end{figure}
+
+Looking into Figure \ref{figTABLEDIFF}, it is possible to observe how the actions selected by the two algorithms differ in various states. However, some wide areas where the action taken by both algorithms is the same can be spotted, which could be referred to as sensitive states where considering a different choice could lead the pole to fall down.\\
+
+\subsubsection{Testing performances}
+
+Figure \ref{figRLvsGA} shows the final testing results of the two methods. As already showed by the traning comparison in both figure \ref{figAVG} and figure \ref{figMAX}, The reinforcement learning agent showed a better generalization ability and more understanding of the environment, leading to obtain better results.\\
+The testing has been conducted as follow: the environment has been seeded with ten different seeds and for every execution the same environment has been provided to both the algorithm.
+The reinforcement learning agent has been tested using the obtained \textit{q-table} from the training, the genetic algorithm population is the last generation of the training performed.\\
+Every individual of the GA population have been tested for all the tests, and the best one has been considered for the comparison, during the testing of the population, no particular difference have been noticed between the reward obtained by the individuals.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics [width=0.5\textwidth]{Images/GAvRL_backup.png}
+	\caption{The plot shows the results obtained testing the two models on the same test set. The x-axis represents the number of the test set, the y-axis the number of steps the model was able to take before reaching the goal. The blue line represents the results obtained using the model trained with the GA, the red line the results obtained using the model trained with the RL.}
+	\label{figRLvsGA}
+\end{figure}
+
+Observing the results, some differences regarding the variance can be noticed: the GA population seem to obtain more consistent results in different tests, but due the fact that the testing is performed on the entire generation this could be related to the fact that every time the best individual is extracted.\\
 
 
 	
