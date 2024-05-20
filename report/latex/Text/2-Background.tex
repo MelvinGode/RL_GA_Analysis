@@ -4,7 +4,7 @@
 
 \subsection{Reinforcement Learning}
 
-Reinforcement learning is defined as the problem that an agent tries to solve by learning behavior through trial and error with its environment. In other words, programming an agent through rewards and punishments rather than how to specifically solve the task itself\cite{kaelbling1996reinforcement} as depicted in figure \ref{figRL}.
+Reinforcement learning is defined as the problem that an agent tries to solve by learning behavior through trial and error with its environment. In other words, programming an agent through rewards and punishments rather than how to specifically solve the task itself \cite{kaelbling1996reinforcement} as depicted in Figure \ref{figRL}.
 \begin{figure}[H]
     \centering
     \includegraphics [scale = 0.2]{Images/RL_graph.png}
@@ -12,7 +12,7 @@ Reinforcement learning is defined as the problem that an agent tries to solve by
     \label{figRL}
 \end{figure}
 %It can be devided into two strategies for solving said problems. The first strategy involves searching the space or state-action pairs for in order to find which works better in the environment. The second technique is estimating the utillity of a particular action. 
-The first concept crucial for reinforcement learning is the \textit{reward function} which is objective feedback from the environment. It is usually scalar values that are associated with state-action pairs. High rewards are usually associated with state-action pairs which beneficial for the agent to be situated in whereas negative rewards would then be disadvantageous states or \textit{hazardous} for the agent to be in. Essentially what is good and bad for the agent in the environment. The sole objective of the agent is then to maximize this reward\cite{sutton1999reinforcement}.
+The first concept crucial for reinforcement learning is the \textit{reward function} which is objective feedback from the environment. It is usually scalar values that are associated with state-action pairs. High rewards are usually associated with state-action pairs which beneficial for the agent to be situated in whereas negative rewards would then be disadvantageous states or \textit{hazardous} for the agent to be in. Essentially what is good and bad for the agent in the environment. The sole objective of the agent is then to maximize this reward \cite{sutton1999reinforcement}.
 
 Naturally, we have to define \textit{state} and \textit{action}, which compared to the rest of the concepts have a very general definition. That being the latter is a descision of some sort and the former a factor that must be considered when taking an action. 
 
@@ -34,7 +34,7 @@ Equation \ref{eqQ} is the \textit{value} or \textit{update} equation which is re
 
 \subsection{Evolutionary computing}
 %rewrite
-Evolutionary computing comprises computational models based on the concept of evolution as seen in biology. It includes many different models but the most biologically accurate is Genetic Algorithms \cite{drugan2019reinforcement} . Similarly to how organisms evolve by natural selection and sexual reproduction, programs can also simulate these processes and behave in a similar fashion to organisms in order to solve a specific problem. In a general sense, natural selection is the process that determines which individuals get to survive by some test of fitness. After the best fits are selected the creation or reproduction of the next generation starts. Reproduction is then the method in which the mixing of genes in the remaining population happens and gets passed to the offspring \cite{holland1992genetic}.
+Evolutionary computing comprises computational models based on the concept of evolution as seen in biology. It includes many different models but the most biologically accurate is Genetic Algorithms \cite{drugan2019reinforcement} . Similarly to how organisms evolve by natural selection and sexual reproduction, programs can also simulate these processes and behave in a similar fashion to organisms in order to solve a specific problem. In a general sense, natural selection is the process that determines which individuals get to survive by some test of fitness. After the best fits are selected the creation or reproduction of the next generation starts. Reproduction is then the method in which the mixing of genes in the remaining population happens and gets passed to the offspring \cite{holland1992genetic}. Figure \ref{figGA} represents the genetic algorithm procedure.
 \begin{figure}[H]
     \centering
     \includegraphics [scale = 0.08]{Images/GA_graph.png}
@@ -46,5 +46,25 @@ By starting with a randomly created population, we have an initial population wi
 
 It is important however that we reduce the genetic drift and keep track of hte best solutions that have been produced by the previous generation. To do that we employ a method called Elitism. In elitism compared with traditional reproduction the most fitting individuals are copied to the next generation without any alteration. In that way the best solution of each generation is always preserved and adds selective pressure and improves convergence speed \cite{du2018elitism}.
 
-\subsection{enviroment}
-The environment that will be used to compare the two methods is called cart pole. It is based on the inverted pendulum, a classic control problem that received attention in the field of reinforcement learning in the eighties. The inverted pendulum balances on a cart that ca go either left or right on a horizontal line. The objective is to maintain the balance of the pole by moving the cart. However the movment should be such so the poll remainsbalanced\cite{moriarty1996efficient}. 
+\subsection{Enviroment}
+The environment that will be used to compare the two methods is called cart pole. It is based on the inverted pendulum, a classic control problem that received attention in the field of reinforcement learning in the eighties. The inverted pendulum balances on a cart that ca go either left or right on a horizontal line. The objective is to maintain the balance of the pole by moving the cart. However the movment should be such so the poll remainsbalanced\cite{moriarty1996efficient}.
+
+The goal is to balance a pole on a cart that can move left or right. 
+
+The state space can be described as $ \mathbb{S} \subset \mathbb{R}^4 $, where every vector $s \in \mathbb{S}$ $(p, v, \alpha, \omega)$, where $p$ consists of a cart position, $v$ cart velocity, $\alpha$ pole angle, $\omega$ and pole angular velocity.
+
+\begin{equation} \label{eqStateSpace}
+{\mathbb{S} = \left\{ s \in \mathbb{R}^4 \mid -4.8 \leq p \leq 4.8, 
+ -24^\circ \leq \theta \leq 24^\circ \right\}}
+\end{equation}
+
+The action space is discrete, with two possible actions: move left or move right. 
+
+The reward is 1 for every time step the pole is mantained balanced.
+
+The goal is to balance the pole for as long as possible, with a limit of 500 actions.
+
+The environment, called \textit{CartPole-v1}, is implemented in Python using the Gymnasium library \cite{towers_gymnasium_2023}. 
+
+Below described implementations have been trained ensuring that in every iteration the starting point is the same between two methods, in order to evaluate the two algorihtms in the exact same conditions.
+

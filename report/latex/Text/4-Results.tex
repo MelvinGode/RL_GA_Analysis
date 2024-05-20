@@ -27,7 +27,7 @@ Figure \ref{figAVG} and Figure \ref{figMAX} shows both average and best results 
 	\label{figMAX}
 \end{figure}
 
-As can be seen in the last two figures, the first takeaway is that RL scores much better than GA.
+As can be seen in Figure \ref{figAVG} and Figure \ref{figMAX}, the first takeaway is that RL scores much better than GA.
 One interesting point though, is that GA performances seem to grow quicker than their RL counterpart at the beginning of training.
 This can be explained by the fact that GA performs parallel search and that the genotype can be modified much more in one crossover than RL's Q-table in an episode. 
 These two factors create more variety in the achieved solutions and by retaining the best out of them, it is easy to see how we might arrive earlier to a viable solution.
@@ -208,7 +208,7 @@ Every individual of the GA population have been tested for all the tests, and th
 
 \begin{figure}[H]
 	\centering
-	\includegraphics [width=0.5\textwidth]{Images/GAvRL_backup.png}
+	\includegraphics [width=0.5\textwidth]{Images/RL_vs_GA.png}
 	\caption{The plot shows the results obtained testing the two models on the same test set. The x-axis represents the number of the test set, the y-axis the number of steps the model was able to take before reaching the goal. The blue line represents the results obtained using the model trained with the GA, the red line the results obtained using the model trained with the RL.}
 	\label{figRLvsGA}
 \end{figure}
