@@ -1,8 +1,9 @@
 \section{Method}
+
+\subsection{Environment}
+
 To evaluate the performance of Reinforcement Learning and Genetic Algorithms,
 experiments have been conducted on the simple but effective environment of the cart pole.
-
-\textcolor{blue}{move this in background!}
 
 Cart Pole is a classic control problem in reinforcement learning. 
 The goal is to balance a pole on a cart that can move left or right. 
@@ -17,7 +18,7 @@ The goal is to balance the pole for as long as possible, with a limit of 500 act
 
 The environment, called \textit{CartPole-v1}, is implemented in Python using the Gymnasium library \cite{towers_gymnasium_2023}.
 \\
-Below described implementations have been trained using the same enviromnemt and ensuring that in every iteration the starting point is the same between two methods, but different from the previous iteration, to ensure that the comparison can be evaluated \textcolor{blue}{without considering the stochastic nature of the training}.
+Below described implementations have been trained using the same enviromnemt and ensuring that in every iteration the starting point is the same between two methods, but different from the previous iteration, to ensure that the comparison can be evaluated in the exact same environment.
 
 \subsection{Reinforcement Learning}
 The reinforcement learning implementation is based on temporal differenc learning \cite{sutton1998temporal}, 
@@ -49,7 +50,7 @@ The parameters used in the experiments are the following:
 		\hline
 		{\textbf{Number of episodes $n_{ep}$}} & {20000} \\
 		\hline
-		{\textbf{Exploration rate $\varepsilon$}}  & {variable} \\
+		{\textbf{Exploration rate $\varepsilon$}}  & {decaying} \\
 		\hline
 		{\textbf{Mutation Rate}} & {0.05} \\
 		\hline
@@ -82,7 +83,8 @@ In this approach, the focus is not to predict every action individually  but ins
 The discretization techninque mirrors that utilized in the reinforcement learning implementation and briefly outlined in Figure \ref{figDISC}.\\
 Here, mutation is performed by swapping the action of a given state with a probability determined by the \textit{Mutation rate}.
 \\
-In our investigation into various genotype options for addressing the pole-balancing problem, we consciously opted not to explore a solution based on NEAT\cite{6790655} networks. Our decision stemmed from the inherently simplistic nature of the environment. Given our primary objective of comparing genetic algorithm (GA) approaches with reinforcement learning (RL) agents, we excluded the possibility to employ a NEAT network for such environment.
+In our investigation into various genotype options for addressing the pole-balancing problem, we consciously opted not to explore a solution based on NEAT\cite{stanley2002NEAT} networks, build a neural network able to predict the correct action given the environment state as input.\\
+Considering the simplicity of the chosen environment and given our primary objective of comparing genetic algorithm (GA) approaches with reinforcement learning (RL) agents, we excluded the possibility to employ a NEAT network for such environment.
 
 Ensuring a fair and transparent comparison between GA and RL methods is the main objective. Introducing unnecessary complexity through a NEAT network could potentially obscure the true comparative performance of the two approaches. Thus, we chose simpler solutions, aligning more closely with typical RL agent implementations. This approach facilitates a clearer evaluation of the relative effectiveness and efficiency of GA and RL algorithms in the pole-balancing task.
 
@@ -90,8 +92,6 @@ Ensuring a fair and transparent comparison between GA and RL methods is the main
 The GA parameters can be found in the following table :
 \begin{table}[htb]%
 	\centering
-	\caption{Parameters used in the GA implementation}
-	\label{tab:GA_parameters}
 	\begin{tabular}{|S|S|} 		% S = special column format from the siunitx package. Aligns commas.
 		
 		\hline
@@ -107,11 +107,13 @@ The GA parameters can be found in the following table :
 		\hline
 		{\textbf{Crossover}}& {one-point} \\
 		\hline
-		{\textbf{\textcolor{blue}{Elitism}}}& {\textcolor{blue}{2} } \\
+		{\textbf{Elitism}}&  {2}  \\
 		\hline
 
 	\end{tabular}
+	\caption{Parameters used in the GA implementation, the \textit{Elitims} parameter describe how many individual from the last generation are saved for the successive one}
+	\label{tab:GA_parameters}
 \end{table}
 
-The one-point crossover method has been adopted, where the <state, action> pair is divided precisely at its midpoint. Consequently, for the first offspring, the initial portion of the table inherits traits from the first parent, while the latter part derives from the second parent. Conversely, the second offspring exhibits the reverse pattern, inheriting the initial traits from the second parent and the latter traits from the first.
+The one-point crossover method has been adopted, where the state-action pair is divided precisely at its midpoint. Consequently, for the first offspring, the initial portion of the table inherits traits from the first parent, while the latter part derives from the second parent. Conversely, the second offspring exhibits the reverse pattern, inheriting the initial traits from the second parent and the latter traits from the first.
 
