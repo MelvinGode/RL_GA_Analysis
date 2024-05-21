@@ -23,7 +23,7 @@ A central class of methods in reinforcement learning is \textit{temporal differe
 In temporal learning there are several submethods or rather algorithms such as SARSA ,Q learning, TD-Lambda, and more \cite{eiben2007reinforcement}.\\
 
 \subsubsection{Q learning}
-Q learning is an algorithm where the environment can be constituted by a controlled Markov process where the agent is controlling it \cite{watkins1992q}. The agent chooses an action and accordingly gets rewarded for it. Essentially it estimates the value of taking an action in a particular state based on immediate rewards and the current Q value. Q-learning uses the Markov chains to calculate the max reward that can be accumulated by the next state action and updates towards that as shown in the equation below.
+Q learning is an algorithm where the environment can be constituted by a controlled Markov process where the agent is controlling it \cite{watkins1992q}. The agent chooses an action and accordingly gets rewarded for it. It estimates the value of taking an action in a particular state based on immediate rewards and the current Q value. Q-learning uses the Markov chains to calculate the max reward that can be accumulated by the next state action and updates towards that as shown in the equation below.
 
 \begin{equation} \label{eqQ}
     { Q(s,a) := Q(s,a) + \eta [r + \gamma \max Q(s',a') - Q(s,a)]}
@@ -34,10 +34,10 @@ Equation \ref{eqQ} is the \textit{value} or \textit{update} equation which is re
 
 \subsection{Evolutionary computing}
 %rewrite
-Evolutionary computing comprises computational models based on the concept of evolution as seen in biology. It includes many different models but the most biologically accurate is Genetic Algorithms \cite{drugan2019reinforcement} . Similarly to how organisms evolve by natural selection and sexual reproduction, programs can also simulate these processes and behave in a similar fashion to organisms in order to solve a specific problem. In a general sense, natural selection is the process that determines which individuals get to survive by some test of fitness. After the best fits are selected the creation or reproduction of the next generation starts. Reproduction is then the method in which the mixing of genes in the remaining population happens and gets passed to the offspring \cite{holland1992genetic}.
+Evolutionary computing comprises computational models based on the concept of evolution as seen in biology. It includes many different models but the most biologically accurate is Genetic Algorithms \cite{drugan2019reinforcement} . Similarly to how organisms evolve by natural selection and sexual reproduction, programs can also simulate these processes and behave in a similar fashion to organisms in order to solve a specific problem. Natural selection is the process that determines which individuals get to survive by some test of fitness. After the best fits are selected the creation or reproduction of the next generation starts. Reproduction is then the method in which the mixing of genes in the remaining population happens and gets passed to the offspring \cite{holland1992genetic}.
 \begin{figure}[H]
     \centering
-    \includegraphics [scale = 0.08]{Images/GA_graph.png}
+    \includegraphics [scale = 0.13]{Images/PHOTO-2024-05-20-17-50-27.jpg}
     \caption{visual representation of genetic algorithms}
     \label{figGA}
 \end{figure}
