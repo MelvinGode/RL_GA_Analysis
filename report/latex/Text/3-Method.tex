@@ -1,25 +1,5 @@
 \section{Method}
 
-\subsection{Environment}
-
-To evaluate the performance of Reinforcement Learning and Genetic Algorithms,
-experiments have been conducted on the simple but effective environment of the cart pole.
-
-Cart Pole is a classic control problem in reinforcement learning. 
-The goal is to balance a pole on a cart that can move left or right. 
-
-The state space is four-dimensional, consisting of the cart position, cart velocity, pole angle, and pole angular velocity $[p, v, \alpha, \omega]$. 
-
-The action space is discrete, with two possible actions: move left or move right. 
-
-The reward is 1 for every time step the pole is balanced.
-
-The goal is to balance the pole for as long as possible, with a limit of 500 actions.
-
-The environment, called \textit{CartPole-v1}, is implemented in Python using the Gymnasium library \cite{towers_gymnasium_2023}.
-\\
-Below described implementations have been trained using the same enviromnemt and ensuring that in every iteration the starting point is the same between two methods, but different from the previous iteration, to ensure that the comparison can be evaluated in the exact same environment.
-
 \subsection{Reinforcement Learning}
 The reinforcement learning implementation is based on temporal differenc learning \cite{sutton1998temporal}, 
 in particular Q-learning.
@@ -30,7 +10,7 @@ The \textit{Q-table} is represented by the discretization of the continuous 4-di
 \begin{figure}[H]
 	\centering
 	\includegraphics [scale = 0.2]{Images/state_discretization.png}
-	\caption{Representation of the state discretization technique, considering an element of the 4D-state, $s_i$, the red dot is the real value of $s_i$, this is discretized to the nearest leftwise discrete state.}
+	\caption{Representation of the state discretization technique, considering an element of the state, $s_i$, the red dot is the real value of $s_i$, this is discretized to the nearest leftwise discrete state.}
 	\label{figDISC}
 \end{figure}
 
@@ -52,13 +32,11 @@ The parameters used in the experiments are the following:
 		\hline
 		{\textbf{Exploration rate $\varepsilon$}}  & {decaying} \\
 		\hline
-		{\textbf{Mutation Rate}} & {0.05} \\
-		\hline
 		{\textbf{Penalty factor $PF$}}& {-375} \\
 		\hline
 		
 	\end{tabular}
-	\caption{Parameters used in the RL implementation. The exploration rate $\varepsilon$ starts with $\varepsilon(0)=1$ and decays by $\varepsilon(t) = \varepsilon(t - 1) - \frac{1}{\frac{n_{ep}}{2} - 1}$, every episode, stopping after $\frac{n_{ep}}{2}$ episodes. }
+	\caption{Parameters used in the RL implementation. The exploration rate $\varepsilon$ starts with $\varepsilon(0)=1$ and decays by $\varepsilon(t) = \varepsilon(t - 1) - \frac{1}{\frac{n_{ep}}{2} - 1}$, every episode, stopping after $\frac{n_{ep}}{2}$ episodes. The penalty factor penalize the Q-value of the determinated state-action tuple of a value \textit{PF}}
 \end{table}
 
 
@@ -74,7 +52,7 @@ The first method used is a very naive implementation that can be applied to a ve
 Thus, \textit{i-th} character of the genotype of an individual $j$ corresponds to the \textit{i-th} action performed by the corresponding individual.
 In this apporach, mutation is performed by switching an action in the genotype from left to right or from right to left with a probability given by the \textit{Mutation rate} for every action $i$ inside the genotype.
 \\
-Since this particular genotype does not generalize well with the random initialization of the starting position of the pole. Due its intrinisc dependecy with the initial state, fixed starting conditions should be applied to effectively train in a meaningful way this genotype, by seeding the environment to always start in the same place, but this leads to a scarse ability of generalization, since the training is valid just for a determinated starting position of the pole.
+Since this particular genotype does not generalize well with the random initialization of the starting position of the pole. Due its intrinisc dependecy with the initial state, fixed starting conditions should be applied to obtain good results with this genotype, forcing the environment to always start at the same place, but this leads to a scarse ability of generalization, since the training is valid just for a determinated starting position of the pole.
 
 All those considerations lead to the decision of evaluating other encodings for the final implementation.\\
 
@@ -82,11 +60,7 @@ The second encoding takes inspiration from Reinforcement Learning \textit{Q-tabl
 In this approach, the focus is not to predict every action individually  but instead use GA to assign values to state-actions pairs then select the action that referes to the observed state.\\
 The discretization techninque mirrors that utilized in the reinforcement learning implementation and briefly outlined in Figure \ref{figDISC}.\\
 Here, mutation is performed by swapping the action of a given state with a probability determined by the \textit{Mutation rate}.
-\\
-In our investigation into various genotype options for addressing the pole-balancing problem, we consciously opted not to explore a solution based on NEAT\cite{stanley2002NEAT} networks, build a neural network able to predict the correct action given the environment state as input.\\
-Considering the simplicity of the chosen environment and given our primary objective of comparing genetic algorithm (GA) approaches with reinforcement learning (RL) agents, we excluded the possibility to employ a NEAT network for such environment.
 
-Ensuring a fair and transparent comparison between GA and RL methods is the main objective. Introducing unnecessary complexity through a NEAT network could potentially obscure the true comparative performance of the two approaches. Thus, we chose simpler solutions, aligning more closely with typical RL agent implementations. This approach facilitates a clearer evaluation of the relative effectiveness and efficiency of GA and RL algorithms in the pole-balancing task.
 
 \subsubsection{Parameters}
 The GA parameters can be found in the following table :
