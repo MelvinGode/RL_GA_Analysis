@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-N_TESTS = 10
+N_TESTS = 15
 SEED = np.random.randint(0, 1000000,N_TESTS)
 NUM_BINS = 20
 def get_discrete_state(state, bins, obsSpaceSize):
@@ -44,7 +44,9 @@ if len(sys.argv) > 2:
   qTable, bins, obsSpaceSize  = load_q_table(qTablePath)
 else:
   qTable, bins, obsSpaceSize  = load_q_table('RL/data/qTable_1_20000_10000_-375.npy')
+  qTable_init, bins, obsSpaceSize  = load_q_table('RL/data/initial_qTable_1_20000_10000_-375.npy')
   population = np.load('data/GA_v2_population_100_fitness_0.005_fitness_2_10_filippo.npy',allow_pickle=True)
+  initial_pop = np.load('data/initial_GA_v2_population_100_0.005_fitness_2_10.npy',allow_pickle=True)
 
 
 def test(qTable, env,  numEpisodes=1,  seed = SEED[0], GA = False, bins = bins, obsSpaceSize = obsSpaceSize):
@@ -77,14 +79,14 @@ def test(qTable, env,  numEpisodes=1,  seed = SEED[0], GA = False, bins = bins, 
 
     return best_reward
 
-def plot_table_diff(qTable, best_ind):
+def plot_table_diff(qTable, best_ind, title='diff_test.png'):
     qTable = np.argmax(qTable, axis=4)
     diff = np.reshape(np.abs(qTable - best_ind),(NUM_BINS*NUM_BINS, NUM_BINS*NUM_BINS))
     # plot diff between the best individual and the qTable x: state, y: action
     plt.imshow(diff, cmap='hot', interpolation='nearest')
     plt.show()
     # save the plot
-    plt.imsave('plots/diff_test.png',diff, cmap='hot')
+    plt.imsave(f'plots/{title}',diff, cmap='hot')
     # include axis in the saved plot
 
 def plot_results(agent_results, best_ind_rew, xlabel='Test Number', ylabel='Reward', ga_color='blue', rl_color='red'):
@@ -108,33 +110,40 @@ def plot_results(agent_results, best_ind_rew, xlabel='Test Number', ylabel='Rewa
     plt.savefig('plots/RL_vs_GA_test.png')
     plt.show()
 
+
+### PLOT INITIAL QTABLE DIFFERENCE ###
+plot_table_diff(qTable_init, initial_pop[0], title='diff_initial.png')
+
+
+### MAIN #### 
 best_ind_rew = np.zeros(N_TESTS)
 agent_results = np.zeros(N_TESTS)
+best_ind = [None]*N_TESTS
 for i in range(N_TESTS):
     # RL test
     print('### RL Testing ###')
     agent_results[i] = test(qTable, env, seed = SEED[i])
 
     # GA test
-    best_ind = population[0]
+    best_ind[i] = population[0]
     print('### GA Testing ###')
     for j in range(len(population)):
         #print(f'Testing individual {j}')
         reward = test(population[j],env, GA = True, seed = SEED[i]) 
         if reward > best_ind_rew[i]:
             best_ind_rew[i] = reward
-            best_ind = i
+            best_ind[i] = population[j]
 
     # save the best individual
     print(f'Best individual {i}: {best_ind_rew[i]}')
 
+np.save('data/RL_vs_GA_test.npy', [agent_results, best_ind_rew])
+
 # plot the difference between the best individual and the qTable
 
-
-
-
+#print(best_ind[0].shape)
 
 plot_results(agent_results, best_ind_rew)
-plot_table_diff(qTable, np.argmax(best_ind))
+plot_table_diff(qTable, best_ind[np.argmax(best_ind_rew)])
 
 

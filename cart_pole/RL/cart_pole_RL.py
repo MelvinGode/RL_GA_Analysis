@@ -109,7 +109,6 @@ def save_metrics(metrics, ts):
 
 
 bins, obsSpaceSize, qTable = create_bins_and_q_table()
-
 previousCnt = []  # array of all scores over runs
 metrics = {'ep': [], 'avg': [], 'min': [], 'max': [], 'time': []}  # metrics recorded for graph
 

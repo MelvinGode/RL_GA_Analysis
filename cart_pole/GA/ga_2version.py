@@ -48,6 +48,9 @@ def create_population(pop_size, numBins=20, obsSpaceSize=4):
     population = np.empty((pop_size, *([numBins] * obsSpaceSize)))
     for i in range(pop_size):
         population[i] = np.random.choice([0,1], ([numBins] * obsSpaceSize))
+
+    name = f'../data/initial_GA_v2_population_{pop_size}_{SELECTION}_{MUTATION_RATE}_{ELITISM}_{NP_SEED}.npy'
+    np.save(name, population)
     return population
 
 # Given a state of the enviroment, return its descreteState index in qTable

@@ -51,7 +51,7 @@ The environment that will be used to compare the two methods is called cart pole
 
 The goal is to balance a pole on a cart that can move left or right. 
 
-The state space can be described as $ \mathbb{S} \subset \mathbb{R}^4 $, where every vector $s \in \mathbb{S}$ $(p, v, \alpha, \omega)$, where $p$ consists of a cart position, $v$ cart velocity, $\alpha$ pole angle, $\omega$ and pole angular velocity.
+The state space is formally described in Equation \ref{eqStateSpace}, where every vector $s \in \mathbb{S}$ $(p, v, \alpha, \omega)$, where $p$ consists of a cart position, $v$ cart velocity, $\alpha$ pole angle, $\omega$ and pole angular velocity.
 
 \begin{equation} \label{eqStateSpace}
 {\mathbb{S} = \left\{ s \in \mathbb{R}^4 \mid -4.8 \leq p \leq 4.8, 
@@ -65,6 +65,3 @@ The reward is 1 for every time step the pole is mantained balanced.
 The goal is to balance the pole for as long as possible, with a limit of 500 actions.
 
 The environment, called \textit{CartPole-v1}, is implemented in Python using the Gymnasium library \cite{towers_gymnasium_2023}. 
-
-Below described implementations have been trained ensuring that in every iteration the starting point is the same between two methods, in order to evaluate the two algorihtms in the exact same conditions.
-
