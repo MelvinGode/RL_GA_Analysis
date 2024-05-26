@@ -5,13 +5,13 @@
 The training phase of a Reinforcement Learning agent and a Genetic Algorithm are fundamentally different.
 Therefore, a way to harmonize the training data of the two methods in order to compare them has to be found.
 \\
-The first approach is to consider RL episodes the same as GA individuals and aggregate the RL performances to match the number of generations used for GA.
-For example considering a population size of $k$ for the Genetic Algorithm, the max and mean of every $k$ Reinforcement Learning episodes have been considered to compare them with each GA generation.
+The first modification is to consider RL episodes the same as GA individuals and aggregate the RL performances to match the number of generations used for GA.
+For example considering a population size of $k$ for the Genetic Algorithm, the max and mean of every $k$ Reinforcement Learning episodes have been considered to compare them with each GA generation. Here, $k$ = 100.
 \\
-Due to the inherent difference between GA which performs a form of parallel search and RL which iteratively improves each episode, led to the decision of not altering the training data and take a more empirical approach.
-The comparison obtained using is thus simply tracking the training time (in seconds) and plotting the performances achieved over time. (Of course both algorithms need to be ran on the same machine for a fair comparison).
+Second, the runtime per iteration might not be the same between the two methods. To account for this difference, the performance data was plotted not against the number of iterations but against the training time (in seconds).
+Of course both algorithms were ran on the same machine for a fair comparison.
 \\
-Figure \ref{figAVG} and Figure \ref{figMAX} shows both average and best results achieved over training time for our two methods.
+Figure \ref{figAVG} and Figure \ref{figMAX} show both average and best results achieved over training time for our two methods.
 
 \begin{figure}[H]
 	\centering
@@ -33,7 +33,7 @@ This can be explained by the fact that GA performs parallel search and that the 
 These two factors create more variety in the achieved solutions and by retaining the best out of them, it is easy to see how we might arrive earlier to a viable solution.
 \\
 However, the other side of this described coin is that, with less stability provided by GA, comes a harder time in making specific and iterative changes to a solution.
-Looking at figure \ref{figAVG}, it is very interesting to note these very similar performances between the two algorithms at 10 to 20 seconds of training, before RL jumps much higher while GA keeps plateau-ing at the same level.
+Looking at Figure \ref{figAVG}, it is very interesting to note these very similar performances between the two algorithms at 10 to 20 seconds of training, before RL jumps much higher while GA keeps plateau-ing at the same level.
 An explanation to the phenomenon might be that RL iteratively tweeks the same solution to perform better which allows to fix encountered problems. Meanwhile, GA might provide too much change over each generation to slowly improve an existing solution further, explaining the flattening out of performance.
 
 \subsubsection{Angle magnitude difference.}
@@ -47,138 +47,81 @@ Since it doesn't penalize exploratory moves, Q-Learning specifically is known to
 This last remark might be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
 
 
-% RL FRAMES %
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/1.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/2.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/3.png}
-	\end{subfigure}
-	\\
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/4.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/5.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/6.png}
-	\end{subfigure}
-	\\
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/7.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/8.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/9.png}
-	\end{subfigure}
-	\\
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/10.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/11.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/RL/12.png}
-	\end{subfigure}
-	\caption{First 12 frames of a game played by the reinforcement learning agent, as can be seen the agent is taking wider swings and playing more "on the edge" than the GA trained agent.}
-	\label{fig:framesRL}
-\end{figure}
 % GA FRAMES %
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}
 		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/1.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/2.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/3.png}
-	\end{subfigure}
-	\\
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/4.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/5.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/GA/6.png}
-	\end{subfigure}
-	\\
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/7.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/8.png}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}
 		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/GA/9.png}
 	\end{subfigure}
-	\\
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/10.png}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}
-		\centering
-		\includegraphics[width=0.3\linewidth]{Images/frames/GA/11.png}
-	\end{subfigure}
 	\hfill
 	\begin{subfigure}
 		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/GA/12.png}
 	\end{subfigure}
-	\caption{First 12 frames of a game played by the genetic algorithm last generation, as can be seen the agent is keeping the pole more straight and moving more cautiously.}
+	\\
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/GA/15.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/GA/18.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/GA/21.png}
+	\end{subfigure}
+	\caption{6 early frames of a game played by the Genetic Algorithm last generation, as can be seen the agent is keeping the pole straight with very little movement.}
 	\label{fig:framesGA}
 \end{figure}
 
+% RL FRAMES %
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/RL/6.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/RL/9.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/RL/12.png}
+	\end{subfigure}
+	\\
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/RL/15.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/RL/18.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}
+		\centering
+		\includegraphics[width=0.3\linewidth]{Images/frames/RL/21.png}
+	\end{subfigure}
+	\caption{6 early frames of a game played by the Reinforcement Learning agent, as can be seen the agent is taking wider swings and playing more "on the edge" than the GA trained agent.}
+	\label{fig:framesRL}
+\end{figure}
+
+\textit{Since displaying one image every frame is very little change and hard to observe without showing too many of them at once, the images above are picked every 3 frames of a played game.
+They are Respectively frames number 6, 9, 12, 15, 18 and 21.}
 
 \subsection{final model comparison}
 
@@ -192,12 +135,23 @@ Since the \textit{Q-Table} does not provide an exact chosen action given a state
 
 \begin{figure}[H]
 	\centering
-	\includegraphics [scale = 0.7]{Images/diff.png}
-	\caption{Difference between the two state-action tables obtained using GA and RL. The black pixels represent the states where the chosen action is the same, while white pixels represent a different action choice. The x-axis contains all the possible pairs of the first two elements of the state's 4D-vector, $(s_1,s_2)$, and the y-axis contains all the possible pairs of the last two elements, $(s_3,s_4)$. }
+	\includegraphics [width=\linewidth]{Images/diff_zoomed.png}
+	\caption{Difference between the two state-action tables obtained using GA and RL. The black pixels represent the states where the chosen action is the same, while white pixels represent a different action choice. The x-axis contains all the possible pairs of the first two elements of the state's vector, $(s_1,s_2)$, and the y-axis contains all the possible pairs of the last two elements, $(s_3,s_4)$. }
 	\label{figTABLEDIFF}
 \end{figure}
 
+
 Looking into Figure \ref{figTABLEDIFF}, it is possible to observe how the actions selected by the two algorithms differ in various states. However, some wide areas where the action taken by both algorithms is the same can be spotted, which could be referred to as sensitive states where considering a different choice could lead the pole to fall down.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics [width=\linewidth]{Images/diff_comparison.png}
+	\caption{Evolution of the state-action table of both models: on the left, the differences of the final state-action table, on the right, the differences among the state-action table on the two models before the training.}
+	\label{figDIFF_COMPARISON}
+\end{figure}
+
+
+Figure \ref{figDIFF_COMPARISON} shows the evolution of the state-action table of the two models, before and after the training. The resulting table differes in several points from the starting one, Figure \ref{figDIFF_COMPARISON} highlights one section where the two algorithm decided to performed the opposite actions. 
 
 \subsubsection{Testing performances}
 

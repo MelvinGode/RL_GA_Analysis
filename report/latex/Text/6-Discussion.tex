@@ -8,6 +8,18 @@ One thing that we also realized while working on this project is also the fact t
 While RL appears to be doing approximately the same thing at a difference pace depending on its parameters, it can feel like GA behaves in very different ways depending on the chosen combination of parameters.
 While probably not very determining in the final results, this could also partly explain why we did not manage to achieve the same performances with GA as witn RL.
 \\
+
+\subsection{Future work}
+A few ideas that we had which could probably improve GA's performance would be to try to target mutations more efficiently.
+First, we could increase the probability of mutation for low scoring individuals (note that we would then have to play the game twice per generation to measure fitness after crossover).
+This is not a new idea in Genetic Algorithms and is a very reasonable thing to do.
+\\
+Second, thinking about the fact that RL is better at targeting the areas it needs to improve on, we thought about increasing the probability of mutation, specifically for states close to where individuals often lose.
+This could help "focusing" on what is wrong with our genotype and performing smarter mutations.
+\\
+However it is important to keep in mind that, for Genetic Algorithms, the crossover is the most important search operator, while mutation is only supposed to bring some diversity and little nudges in the search.
+So we should not expect too much out of improving the mutation operation as it is not the main point of the algorithm.
+\\
 It is also good to keep in mind that the obtained results could be possible thanks to \textit{state discretization}, which allowed us to use the aforementioned tabular approach.
 Without the state discretization approach, different and more elaborate directions should have been considered. 
 

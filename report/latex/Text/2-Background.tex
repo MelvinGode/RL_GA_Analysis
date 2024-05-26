@@ -37,7 +37,7 @@ Equation \ref{eqQ} is the \textit{value} or \textit{update} equation which is re
 Evolutionary computing comprises computational models based on the concept of evolution as seen in biology. It includes many different models but the most biologically accurate is Genetic Algorithms \cite{drugan2019reinforcement} . Similarly to how organisms evolve by natural selection and sexual reproduction, programs can also simulate these processes and behave in a similar fashion to organisms in order to solve a specific problem. Natural selection is the process that determines which individuals get to survive by some test of fitness. After the best fits are selected the creation or reproduction of the next generation starts. Reproduction is then the method in which the mixing of genes in the remaining population happens and gets passed to the offspring \cite{holland1992genetic}.
 \begin{figure}[H]
     \centering
-    \includegraphics [scale = 0.13]{Images/PHOTO-2024-05-20-17-50-27.jpg}
+    \includegraphics [width=0.5\textwidth]{Images/GA_graph.png}
     \caption{visual representation of genetic algorithms}
     \label{figGA}
 \end{figure}
@@ -51,7 +51,7 @@ The environment that will be used to compare the two methods is called cart pole
 
 The goal is to balance a pole on a cart that can move left or right. 
 
-The state space can be described as $ \mathbb{S} \subset \mathbb{R}^4 $, where every vector $s \in \mathbb{S}$ $(p, v, \alpha, \omega)$, where $p$ consists of a cart position, $v$ cart velocity, $\alpha$ pole angle, $\omega$ and pole angular velocity.
+The state space is formally described in Equation \ref{eqStateSpace}, a vector $s \in \mathbb{S}$ with components $(p, v, \alpha, \omega)$, where $p$ consists of a cart position, $v$ cart velocity, $\alpha$ pole angle, $\omega$ and pole angular velocity.
 
 \begin{equation} \label{eqStateSpace}
 {\mathbb{S} = \left\{ s \in \mathbb{R}^4 \mid -4.8 \leq p \leq 4.8, 
@@ -65,6 +65,3 @@ The reward is 1 for every time step the pole is mantained balanced.
 The goal is to balance the pole for as long as possible, with a limit of 500 actions.
 
 The environment, called \textit{CartPole-v1}, is implemented in Python using the Gymnasium library \cite{towers_gymnasium_2023}. 
-
-Below described implementations have been trained ensuring that in every iteration the starting point is the same between two methods, in order to evaluate the two algorihtms in the exact same conditions.
-
