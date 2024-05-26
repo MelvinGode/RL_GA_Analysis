@@ -33,7 +33,7 @@ This can be explained by the fact that GA performs parallel search and that the 
 These two factors create more variety in the achieved solutions and by retaining the best out of them, it is easy to see how we might arrive earlier to a viable solution.
 \\
 However, the other side of this described coin is that, with less stability provided by GA, comes a harder time in making specific and iterative changes to a solution.
-Looking at figure \ref{figAVG}, it is very interesting to note these very similar performances between the two algorithms at 10 to 20 seconds of training, before RL jumps much higher while GA keeps plateau-ing at the same level.
+Looking at Figure \ref{figAVG}, it is very interesting to note these very similar performances between the two algorithms at 10 to 20 seconds of training, before RL jumps much higher while GA keeps plateau-ing at the same level.
 An explanation to the phenomenon might be that RL iteratively tweeks the same solution to perform better which allows to fix encountered problems. Meanwhile, GA might provide too much change over each generation to slowly improve an existing solution further, explaining the flattening out of performance.
 
 \subsubsection{Angle magnitude difference.}
@@ -135,12 +135,23 @@ Since the \textit{Q-Table} does not provide an exact chosen action given a state
 
 \begin{figure}[H]
 	\centering
-	\includegraphics [scale = 0.7]{Images/diff.png}
-	\caption{Difference between the two state-action tables obtained using GA and RL. The black pixels represent the states where the chosen action is the same, while white pixels represent a different action choice. The x-axis contains all the possible pairs of the first two elements of the state's 4D-vector, $(s_1,s_2)$, and the y-axis contains all the possible pairs of the last two elements, $(s_3,s_4)$. }
+	\includegraphics [width=\linewidth]{Images/diff_zoomed.png}
+	\caption{Difference between the two state-action tables obtained using GA and RL. The black pixels represent the states where the chosen action is the same, while white pixels represent a different action choice. The x-axis contains all the possible pairs of the first two elements of the state's vector, $(s_1,s_2)$, and the y-axis contains all the possible pairs of the last two elements, $(s_3,s_4)$. }
 	\label{figTABLEDIFF}
 \end{figure}
 
+
 Looking into Figure \ref{figTABLEDIFF}, it is possible to observe how the actions selected by the two algorithms differ in various states. However, some wide areas where the action taken by both algorithms is the same can be spotted, which could be referred to as sensitive states where considering a different choice could lead the pole to fall down.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics [width=\linewidth]{Images/diff_comparison.png}
+	\caption{Evolution of the state-action table of both models: on the left, the differences of the final state-action table, on the right, the differences among the state-action table on the two models before the training.}
+	\label{figDIFF_COMPARISON}
+\end{figure}
+
+
+Figure \ref{figDIFF_COMPARISON} shows the evolution of the state-action table of the two models, before and after the training. The resulting table differes in several points from the starting one, Figure \ref{figDIFF_COMPARISON} highlights one section where the two algorithm decided to performed the opposite actions. 
 
 \subsubsection{Testing performances}
 
