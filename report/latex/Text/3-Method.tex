@@ -1,9 +1,9 @@
 \section{Method}
-The below described implementations have been trained ensuring that in every iteration the starting point is the same between two methods, in order to evaluate the two algorihtms in the exact same conditions.
+The below described implementations have been trained ensuring that in every iteration the starting point is the same between two methods, in order to evaluate the two algorithms in the exact same conditions.
 
 
 \subsection{Reinforcement Learning}
-The reinforcement learning implementation is based on temporal differenc learning \cite{sutton1998temporal}, 
+The reinforcement learning implementation is based on temporal difference learning \cite{sutton1998temporal}, 
 in particular Q-learning.
 The implementation takes inspiration from the work of \textit{JackFurby} \cite{JackFurbyCartPole}.
 
@@ -38,7 +38,7 @@ The parameters used in the experiments are the following:
 		\hline
 		
 	\end{tabular}
-	\caption{Parameters used in the RL implementation. The exploration rate $\varepsilon$ starts with $\varepsilon(0)=1$ and decays by $\varepsilon(t) = \varepsilon(t - 1) - \frac{1}{\frac{n_{ep}}{2} - 1}$, every episode, stopping after $\frac{n_{ep}}{2}$ episodes. The penalty factor penalize the Q-value of the determinated state-action tuple of a value \textit{PF}}
+	\caption{Parameters used in the RL implementation. The exploration rate $\varepsilon$ starts with $\varepsilon(0)=1$ and decays by $\varepsilon(t) = \varepsilon(t - 1) - \frac{1}{\frac{n_{ep}}{2} - 1}$, every episode, stopping after $\frac{n_{ep}}{2}$ episodes. The penalty factor penalize the Q-value of the determinated state-action tuple with a value \textit{PF}}
 \end{table}
 
 
@@ -50,9 +50,9 @@ Since Genetic Algorithms can be very different depending on the genotype chosen 
 \\
 
 
-The first method used is a very naive implementation that can be applied to a very large variety of problems with GA : reprensenting individuals with the vector of all actions they will perform in order.
+The first method used is a very naive implementation that can be applied to a very large variety of problems with GA : representing individuals with the vector of all actions they will perform in order.
 Thus, \textit{i-th} character of the genotype of an individual $j$ corresponds to the \textit{i-th} action performed by the corresponding individual.
-In this apporach, mutation is performed by switching an action in the genotype from left to right or from right to left with a probability given by the \textit{Mutation rate} for every action $i$ inside the genotype.
+In this approach, mutation is performed by switching an action in the genotype from left to right or from right to left with a probability given by the \textit{Mutation rate} for every action $i$ inside the genotype.
 \\
 Since this particular genotype does not generalize well with the random initialization of the starting position of the pole. Due its intrinisc dependecy with the initial state, fixed starting conditions should be applied to obtain good results with this genotype, forcing the environment to always start at the same place, but this leads to a scarse ability of generalization, since the training is valid just for a determinated starting position of the pole.
 
@@ -60,7 +60,7 @@ All those considerations lead to the decision of evaluating other encodings for 
 
 The second encoding takes inspiration from Reinforcement Learning \textit{Q-table}.
 In this approach, the focus is not to predict every action individually  but instead use GA to assign values to state-actions pairs then select the action that referes to the observed state.\\
-The discretization techninque mirrors that utilized in the reinforcement learning implementation and briefly outlined in Figure \ref{figDISC}.\\
+The discretization technique mirrors that utilized in the reinforcement learning implementation and briefly outlined in Figure \ref{figDISC}.\\
 Here, mutation is performed by swapping the action of a given state with a probability determined by the \textit{Mutation rate}.
 
 
