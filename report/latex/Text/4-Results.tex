@@ -8,8 +8,8 @@ Therefore, a way to harmonize the training data of the two methods in order to c
 The first modification is to consider RL episodes the same as GA individuals and aggregate the RL performances to match the number of generations used for GA.
 For example considering a population size of $k$ for the Genetic Algorithm, the max and mean of every $k$ Reinforcement Learning episodes have been considered to compare them with each GA generation. Here, $k$ = 100.
 \\
-Second, the runtime per iteration might not be the same between the two methods. To account for this difference, the performance data was plotted not against the number of iterations but against the training time (in seconds).
-Of course both algorithms were ran on the same machine for a fair comparison.
+Second, the runtime per iteration might differ between the two methods. To account for this difference, the performance data was plotted not against the number of iterations but against the training time (in seconds).
+Of course both algorithms were run on the same machine for a fair comparison.
 \\
 Figure \ref{figAVG} and Figure \ref{figMAX} show both average and best results achieved over training time for our two methods.
 
@@ -27,7 +27,7 @@ Figure \ref{figAVG} and Figure \ref{figMAX} show both average and best results a
 	\label{figMAX}
 \end{figure}
 
-As can be seen in Figure \ref{figAVG} and Figure \ref{figMAX}, the first takeaway is that RL scores much better than GA.
+As can be seen in Figure \ref{figAVG} and Figure \ref{figMAX}, the first takeaway is that RL significantly outperforms GA.
 One interesting point though, is that GA performances seem to grow quicker than their RL counterpart at the beginning of training.
 This can be explained by the fact that GA performs parallel search and that the genotype can be modified much more in one crossover than RL's Q-table in an episode. 
 These two factors create more variety in the achieved solutions and by retaining the best out of them, it is easy to see how we might arrive earlier to a viable solution.
@@ -44,7 +44,7 @@ This initial obsevation was confirmed more quantitatively, by measuring the aver
 Indeed, it turns out that the average absolute value of the angle is consistently two orders of magnitude greater during RL training than during GA training.
 Since it doesn't penalize exploratory moves, Q-Learning specifically is known to be more prone to taking risks than other RL techniques. However, we tried using SARSA (another RL method without this feature) and still confirmed the same results.
 \\
-This last remark might be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
+This last remark may be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
 
 
 % GA FRAMES %
@@ -80,7 +80,7 @@ This last remark might be even more surprising considering that we know the RL a
 		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/GA/21.png}
 	\end{subfigure}
-	\caption{6 early frames of a game played by the Genetic Algorithm last generation, as can be seen the agent is keeping the pole straight with very little movement.}
+	\caption{Frames 6, 9, 12, 15 and 21 of a game played by the GA algorithm}
 	\label{fig:framesGA}
 \end{figure}
 
@@ -116,12 +116,12 @@ This last remark might be even more surprising considering that we know the RL a
 		\centering
 		\includegraphics[width=0.3\linewidth]{Images/frames/RL/21.png}
 	\end{subfigure}
-	\caption{6 early frames of a game played by the Reinforcement Learning agent, as can be seen the agent is taking wider swings and playing more "on the edge" than the GA trained agent.}
+	\caption{Frames 6, 9, 12, 15 and 21 of a game played by the RL agent}
 	\label{fig:framesRL}
 \end{figure}
 
-\textit{Since displaying one image every frame is very little change and hard to observe without showing too many of them at once, the images above are picked every 3 frames of a played game.
-They are Respectively frames number 6, 9, 12, 15, 18 and 21.}
+We can see on figures \ref*{fig:framesGA} and \ref*{fig:framesRL} that the GA algorithm keeps the pole very straight with very little movement.
+Meanwhile, the RL agent makes the pole more angled, using a wider swing.
 
 \subsection{final model comparison}
 
