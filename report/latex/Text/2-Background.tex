@@ -69,14 +69,14 @@ Due to the variation in the population, some individuals will be better \textit{
 In the crossover stage, the remaining individuals will mix their genotypes to produce individuals for the next generation. 
 These steps will be continuously repeated fore some number of generations \cite{forrest1996genetic}. 
 
-It is important however that we reduce the genetic drift and keep track of hte best solutions that have been produced by the previous generation. To do that we employ a method called Elitism. In elitism compared with traditional reproduction the most fitting individuals are copied to the next generation without any alteration. In that way the best solution of each generation is always preserved and adds selective pressure and improves convergence speed \cite{du2018elitism}.
+It is important however that we reduce the genetic drift and keep track of the best solutions that have been produced by the previous generation. To do that we employ a method called Elitism. In elitism compared with traditional reproduction the most fitting individuals are copied to the next generation without any alteration. In that way the best solution of each generation is always preserved and adds selective pressure and improves convergence speed \cite{du2018elitism}.
 
 \subsection{Enviroment}
+\label{sec:Enviroment}
 The environment that will be used to compare the two methods is called cart pole. It is based on the inverted pendulum, a classic control problem that received attention in the field of reinforcement learning in the eighties. The inverted pendulum balances on a cart that ca go either left or right on a horizontal line. The objective is to maintain the balance of the pole by moving the cart. However the movment should be such so the poll remainsbalanced\cite{moriarty1996efficient}.
 
 The goal is to balance a pole on a cart that can move left or right. 
-
-The state space is formally described in Equation \ref{eqStateSpace}, a vector $s \in \mathbb{S}$ with components $(p, v, \alpha, \omega)$, where $p$ consists of a cart position, $v$ cart velocity, $\alpha$ pole angle, $\omega$ and pole angular velocity.
+The state space is formally described in Equation \ref{eqStateSpace}, a single vector $s \in \mathbb{S}$ has components $(p, v, \alpha, \omega)$, where $p$ consists of a cart position, $v$ cart velocity, $\alpha$ pole angle, $\omega$ and pole angular velocity.
 
 \begin{equation} \label{eqStateSpace}
 {\mathbb{S} = \left\{ s \in \mathbb{R}^4 \mid -4.8 \leq p \leq 4.8, 
