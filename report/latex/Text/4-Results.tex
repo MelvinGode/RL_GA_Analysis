@@ -120,10 +120,12 @@ This last remark may be even more surprising considering that we know the RL age
 	\label{fig:framesRL}
 \end{figure}
 
-We can see on figures \ref*{fig:framesGA} and \ref*{fig:framesRL} that the GA algorithm keeps the pole very straight with very little movement.
+Figures \ref{fig:framesGA} and \ref{fig:framesRL} shows that the GA algorithm keeps the pole very straight with very little movement.
 Meanwhile, the RL agent makes the pole more angled, using a wider swing.
 
-\subsection{final model comparison}
+\pagebreak
+
+\subsection{Final model comparison}
 
 The second approach used to compare the obtained results is based on the final models' observations.
 
@@ -142,6 +144,7 @@ Since the \textit{Q-Table} does not provide an exact chosen action given a state
 
 
 Looking into Figure \ref{figTABLEDIFF}, it is possible to observe how the actions selected by the two algorithms differ in various states. However, some wide areas where the action taken by both algorithms is the same can be spotted, which could be referred to as sensitive states where considering a different choice could lead the pole to fall down.\\
+Figure \ref{figTABLEDIFF} also points out that the two algorithm were able to find two valid and different solutions on the same problem.
 
 \begin{figure}[H]
 	\centering
@@ -155,48 +158,14 @@ Figure \ref{figDIFF_COMPARISON} shows the evolution of the state-action table of
 
 \subsubsection{Testing performances}
 
-Figure \ref{figRLvsGA} shows the final testing results of the two methods. As already showed by the traning comparison in both figure \ref{figAVG} and figure \ref{figMAX}, The reinforcement learning agent showed a better generalization ability and more understanding of the environment, leading to obtain better results.\\
+Figure \ref{figRLvsGA} shows the final testing results of the two methods. As already showed by the traning comparison in both Figure \ref{figAVG} and Figure \ref{figMAX}, The reinforcement learning agent showed a better generalization ability and more understanding of the environment, leading to obtain better results.\\
 The testing has been conducted as follow: the environment has been seeded with ten different seeds and for every execution the same environment has been provided to both the algorithm.
 The reinforcement learning agent has been tested using the obtained \textit{q-table} from the training, the genetic algorithm population is the last generation of the training performed.\\
 Every individual of the GA population have been tested for all the tests, and the best one has been considered for the comparison, during the testing of the population, no particular difference have been noticed between the reward obtained by the individuals.
-
 \begin{figure}[H]
 	\centering
 	\includegraphics [width=0.5\textwidth]{Images/RL_vs_GA.png}
 	\caption{The plot shows the results obtained testing the two models on the same test set. The x-axis represents the number of the test set, the y-axis the number of steps the model was able to take before reaching the goal. The blue line represents the results obtained using the model trained with the GA, the red line the results obtained using the model trained with the RL.}
 	\label{figRLvsGA}
 \end{figure}
-
-Observing the results, some differences regarding the variance can be noticed: the GA population seem to obtain more consistent results in different tests, but due the fact that the testing is performed on the entire generation this could be related to the fact that every time the best individual is extracted.\\
-
-
-	
-
-
-
-% % Delete the text and write your Results here:
-% %------------------------------------
-
-% The results section can be combined with the discussion if appropriate. In case of many sub\-/experiments % \-/ fixes the problem that LaTeX won't hyphenate words with dashes in them.
-% where the results are vaguely related or unrelated, it would be appropriate to combine the results and discussion. This way you have the information related to each sub-experiment gathered in one place. \par
-% Provide uncertainties for the results, but don't discuss it. Do not involve personal opinions, just present the cold hard results in form of numbers, tables, graphs and some sentences. \par
-% \Cref{tab:Some-numbers} shows a nice table with comma alignment. \par
-
-% \begin{table}[htb]%
-% \centering
-% \caption{Table with comma alignment.}
-% 	\label{tab:Some-numbers}
-% 	\begin{tabular}{SSS} 		% S = special column format from the siunitx package. Aligns commas.
-% 		\toprule
-% 		{$m$}  &  {$a$}  & {$F$}  \\
-% 		{(\si{kg})} &  {(\si{m.s^{-2}})} & {(\si{N})}  \\
-% 		\midrule
-% 		1,2 & 10,1 & 12 \\
-% 		2,44 & 6,92 & 16,88 \\
-% 		10 & 1,0 & 10 \\
-% 		8,2 & 1,1 & 9,0 \\
-% 		100 & 1 & 100 \\
-% 		\bottomrule
-% 	\end{tabular}
-% \end{table}
-
+Observing the results, some differences regarding the variance can be noticed: the GA population seem to obtain more consistent results in different tests, but due the fact that the testing is performed on the entire generation this could be in part related to the fact that every time the best individual is extracted, even if analyzing the last generation of the GA algorithm, most of the individual scored similar results.\\
