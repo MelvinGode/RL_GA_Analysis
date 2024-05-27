@@ -11,7 +11,7 @@ While probably not very determining in the final results, this could also partly
 
 \subsection{Future work}
 A few ideas that we had which could probably improve GA's performance would be to try to target mutations more efficiently.
-First, we could increase the probability of mutation for low scoring individuals (note that we would then have to play the game twice per generation to measure fitness after crossover).
+First,the probability of mutation could be increased for low scoring individuals (note that we would then have to play the game twice per generation to measure fitness after crossover).
 This is not a new idea in Genetic Algorithms and is a very reasonable thing to do.
 \\
 Second, thinking about the fact that RL is better at targeting the areas it needs to improve on, we thought about increasing the probability of mutation, specifically for states close to where individuals often lose.
@@ -20,10 +20,5 @@ This could help "focusing" on what is wrong with our genotype and performing sma
 However it is important to keep in mind that, for Genetic Algorithms, the crossover is the most important search operator, while mutation is only supposed to bring some diversity and little nudges in the search.
 So we should not expect too much out of improving the mutation operation as it is not the main point of the algorithm.
 \\
-It is also good to keep in mind that the obtained results could be possible thanks to \textit{state discretization}, which allowed us to use the aforementioned tabular approach.
-Without the state discretization approach, different and more elaborate directions should have been considered. 
-
-% note: i commented this part since ive included something regarding neat networks in the method section (explaining why we did not used them) 
-
-%A discussed alternative could be exploring the path of function approximation, which is a very common approach in continuous state problems in RL, 
-%but no further experiments have been conducted in this direction due to the complex adaptations of this technique to the GA algorithm (see \cite[NEAT]{stanley2002NEAT} for example).
+The obtained results could be possible thanks to \textit{state discretization}, which allowed us to use the aforementioned tabular approach.
+Without the state discretization approach, different and more elaborate directions should have been considered.
