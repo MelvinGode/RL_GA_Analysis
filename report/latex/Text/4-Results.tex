@@ -43,7 +43,7 @@ It became apparent that the RL trained agent was taking way wider swings and gen
 This initial obsevation was confirmed quantitatively, by measuring the average absolute value of the angle of the pole during every episode of training.
 Indeed, it turns out that the average absolute value of the angle is consistently two orders of magnitude greater during RL training than during GA training. ($ \sim 0.05$ radians to $\sim 0.0005$ radians).
 \\
-Since it doesn't penalize exploratory moves, Q-Learning specifically is known to be more prone to taking risks than other RL techniques. 
+Since it does not penalize exploratory moves, Q-Learning specifically is known to be more prone to taking risks than other RL techniques. 
 However, we tried using SARSA (another RL method without this feature) and still confirmed the same results.
 \\
 This observation may be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
