@@ -11,7 +11,7 @@ For example considering a population size of $k$ for the Genetic Algorithm, the 
 Second, the runtime per iteration might differ between the two methods. To account for this difference, the performance data was plotted not against the number of iterations but against the training time (in seconds).
 Of course both algorithms were run on the same machine for a fair comparison.
 \\
-Figure \ref{figAVG} and Figure \ref{figMAX} show both average and best results achieved over training time for our two methods.
+Figure \ref{figAVG} and Figure \ref{figMAX} show average and maximum results achieved at each iteration over training time.
 
 \begin{figure}[H]
 	\centering
@@ -40,11 +40,13 @@ An explanation to the phenomenon might be that RL iteratively tweeks the same so
 Another difference between the two approach is the behavior of the agent during the game itself.
 This was only made visible once GIFs were generated to view sample games, as resumed in Figure \ref{fig:framesRL} for the reinforcement learning agent and Figure \ref{fig:framesGA} for the genetic algorithm last generation. 
 It became apparent that the RL trained agent was taking way wider swings and generally playing more "on the edge" than the GA trained agent who is keeping the pole more straight and moving more cautiously.
-This initial obsevation was confirmed more quantitatively, by measuring the average absolute value of the angle of the pole during every episode of training.
-Indeed, it turns out that the average absolute value of the angle is consistently two orders of magnitude greater during RL training than during GA training.
-Since it doesn't penalize exploratory moves, Q-Learning specifically is known to be more prone to taking risks than other RL techniques. However, we tried using SARSA (another RL method without this feature) and still confirmed the same results.
+This initial obsevation was confirmed quantitatively, by measuring the average absolute value of the angle of the pole during every episode of training.
+Indeed, it turns out that the average absolute value of the angle is consistently two orders of magnitude greater during RL training than during GA training. (~0.05 radians to ~0.0005 radians).
 \\
-This last remark may be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
+Since it doesn't penalize exploratory moves, Q-Learning specifically is known to be more prone to taking risks than other RL techniques. 
+However, we tried using SARSA (another RL method without this feature) and still confirmed the same results.
+\\
+This observation may be even more surprising considering that we know the RL agent clearly outperforms the Genetic Algorithm, we might intuitively think that keeping the pole more straight would reflect better overall play.
 
 
 % GA FRAMES %
@@ -120,7 +122,7 @@ This last remark may be even more surprising considering that we know the RL age
 	\label{fig:framesRL}
 \end{figure}
 
-Figures \ref{fig:framesGA} and \ref{fig:framesRL} shows that the GA algorithm keeps the pole very straight with very little movement.
+Figures \ref{fig:framesGA} and \ref{fig:framesRL} show that the GA algorithm keeps the pole very straight with very little movement.
 Meanwhile, the RL agent makes the pole more angled, using a wider swing.
 
 \pagebreak
