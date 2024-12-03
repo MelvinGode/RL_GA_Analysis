@@ -8,7 +8,7 @@ It explores the comparative advantages and disadvantages of using a genetic algo
 ## 👨‍💻 Authors
 - Filippo Balzarini [filomba01](https://github.com/filomba01) 
 - Iason Kaxiras [Iason-kaxiras](https://github.com/Iason-kaxiras) 
-- Melvin Gode [Klackson](https://github.com/Klackson) 
+- Melvin Gode [MelvinGode](https://github.com/MelvinGode) 
 
 ## 📥 Download
 You can download the report [here](https://github.com/filomba01/RL_GA_Analysis/blob/main/report/latex/main.pdf). 
